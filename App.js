@@ -1,20 +1,36 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import React, { useState } from 'react';
+import { Button, Text, View } from 'react-native';
 
-export default function App() {
+const Hook = props => {
+  const [isClicked, setIsClick] = useState(false);
+
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
+    <View>
+      <Text>
+        {isClicked? 'Hi, ' + props.name: '點我看看'}
+      </Text>
+      <Button
+        onPress={() => {
+          setIsClick(true);
+        }}
+        disabled={isClicked}
+        title={isClicked ? '快點做專題' : '這是個按鈕'}
+      />
     </View>
   );
-}
+};
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+const App = () => {
+  return (
+    <View style={{
+      flex: 1,
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: '#ecf0f1',
+    }}>
+      <Hook name="sb" />
+    </View>
+  );
+};
+
+export default App;
