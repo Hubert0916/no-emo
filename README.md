@@ -18,9 +18,11 @@ git clone https://github.com/Hubert0916/no-emo.git
 npm install
 ```
 
-4. Start Expo server
+4. Start Expo server and a QR-code would appear
 ```
 npx expo start
 ```
 
-5. Scan QR-code on your mobile device. Done.
+5. Install "Expo Go" on your mobile device by App Store or Play Store
+
+6. Scan the QR-code. Done
