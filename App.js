@@ -4,6 +4,10 @@ import { NavigationContainer, useNavigation } from '@react-navigation/native';
 import { Button } from '@react-navigation/elements';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import SelectEmoji from './selectemoji';
+import ReviewScreen from './ReviewScreen';
+
+
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -13,6 +17,8 @@ function HomeStack() {
     <Stack.Navigator>
       <Stack.Screen name="Home" component={HomeScreen} />
       <Stack.Screen name="Details" component={DetailsScreen} />
+      <Stack.Screen name="SelectEmoji" component={SelectEmoji} />
+      <Stack.Screen name="Review" component={ReviewScreen} />
     </Stack.Navigator>
   );
 }
@@ -39,13 +45,12 @@ function HomeScreen() {
 }
 
 function DetailsScreen() {
+  const navigation = useNavigation();
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <Text>紅中自摸🤑</Text>
-      <Image
-        source={require('./assets/mahjong.png')}
-        style={{ width: 300, height: 300 }}
-      />
+    <Button onPress={() => navigation.navigate('SelectEmoji')}>
+        點我🥺
+      </Button>
     </View>
   )
 }
