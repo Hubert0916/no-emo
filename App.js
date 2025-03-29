@@ -1,33 +1,30 @@
 import * as React from 'react';
-import { Text, View, Image } from 'react-native';
-import { NavigationContainer, useNavigation } from '@react-navigation/native';
+import { Text, View, Image, Animated} from 'react-native';
+import { NavigationContainer, useNavigation, DefaultTheme } from '@react-navigation/native';
 import { Button } from '@react-navigation/elements';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import SelectEmoji from './selectemoji';
 import ReviewScreen from './ReviewScreen';
-
-
+import CloudAnimation from './Cloud';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
+const MyTheme = {
+  ...DefaultTheme,
+  colors: {
+    ...DefaultTheme.colors,
+    background: 'rgb(193, 196, 192)',
+    primary: 'rgb(3, 0, 1)',
+  },
+};
 
 function HomeStack() {
   return (
-    <Stack.Navigator>
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen name="Home" component={HomeScreen} />
-      <Stack.Screen name="Details" component={DetailsScreen} />
       <Stack.Screen name="SelectEmoji" component={SelectEmoji} />
       <Stack.Screen name="Review" component={ReviewScreen} />
-    </Stack.Navigator>
-  );
-}
-
-function ProfileStack() {
-  return (
-    <Stack.Navigator>
-      <Stack.Screen name="Profile" component={ProfileScreen} />
-      <Stack.Screen name="Settings" component={SettingsScreen} />
     </Stack.Navigator>
   );
 }
@@ -36,57 +33,55 @@ function HomeScreen() {
   const navigation = useNavigation();
 
   return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <Button onPress={() => navigation.navigate('Details')}>
-        點我拜託🥺
+    <View style={{ flex: 1, alignItems: 'center' }}>
+      <Image
+        source={require('./assets/gradient.png')}
+        style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, width: '100%', height: '100%' }}
+      />
+      <Text style={{fontSize: 48, color: 'white', top: '20%'}}>今天好嗎?</Text>
+      <CloudAnimation/>
+      <Button onPress={() => navigation.navigate('SelectEmoji')} style={{ position: 'absolute', bottom: '20%' }}>
+        立即放鬆！
       </Button>
     </View>
   );
 }
 
-function DetailsScreen() {
-  const navigation = useNavigation();
+/* empty page start */
+function SomeStack() {
   return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-    <Button onPress={() => navigation.navigate('SelectEmoji')}>
-        點我🥺
-      </Button>
-    </View>
-  )
-}
-
-function ProfileScreen() {
-  const navigation = useNavigation();
-
-  return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <Button onPress={() => navigation.navigate('Settings')}>
-        不要點我拜託🥺
-      </Button>
-    </View>
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="Profile" component={SomeScreen} />
+    </Stack.Navigator>
   );
 }
 
-function SettingsScreen() {
+function SomeScreen() {
+  const navigation = useNavigation();
+
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <Text>什麼都沒有🥸</Text>
+      <Text>
+        To be update...
+      </Text>
     </View>
-  )
+  );
 }
+/* empty page end */
+
 
 function MyTab() {
   return (
     <Tab.Navigator screenOptions={{ headerShown: false }}>
-      <Tab.Screen name="Home" component={HomeStack} />
-      <Tab.Screen name="Profile" component={ProfileStack} />
+      <Tab.Screen name="Check-In" component={HomeStack} />
+      <Tab.Screen name="..." component={SomeStack} />
     </Tab.Navigator>
   );
 }
 
 export default function App() {
   return (
-    <NavigationContainer>
+    <NavigationContainer theme={MyTheme}>
       <MyTab />
     </NavigationContainer>
   );
