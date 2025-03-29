@@ -2,7 +2,7 @@
 
 使用 React Native 和 Expo 的 App
 
-## How to Use
+## How to Use by Expo
 
 1. Git clone to your local
 
