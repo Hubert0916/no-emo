@@ -4,9 +4,10 @@ import { NavigationContainer, useNavigation, DefaultTheme } from '@react-navigat
 import { Button } from '@react-navigation/elements';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import SelectEmoji from './selectemoji';
+import SelectEmoji from './Selectemoji';
 import ReviewScreen from './ReviewScreen';
-import CloudAnimation from './Cloud';
+import CloudAnimation from './components/Cloud';
+import MoodTrackerCalendar from './Calendar'
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -35,7 +36,7 @@ function HomeScreen() {
   return (
     <View style={{ flex: 1, alignItems: 'center' }}>
       <Image
-        source={require('./assets/gradient.png')}
+        source={require('../assets/gradient.png')}
         style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, width: '100%', height: '100%' }}
       />
       <Text style={{fontSize: 48, color: 'white', top: '20%'}}>今天好嗎?</Text>
@@ -47,7 +48,6 @@ function HomeScreen() {
   );
 }
 
-/* empty page start */
 function SomeStack() {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
@@ -67,14 +67,13 @@ function SomeScreen() {
     </View>
   );
 }
-/* empty page end */
 
 
 function MyTab() {
   return (
     <Tab.Navigator screenOptions={{ headerShown: false }}>
       <Tab.Screen name="Check-In" component={HomeStack} />
-      <Tab.Screen name="..." component={SomeStack} />
+      <Tab.Screen name="Diary" component={MoodTrackerCalendar} />
     </Tab.Navigator>
   );
 }

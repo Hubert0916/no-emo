@@ -7,7 +7,7 @@ export const Emotion_Categories = {
     emoji: "😆",
     category: "Positive",
     label: "Positive",
-    image: require('./assets/emoji_1.png'),
+    image: require('../assets/emoji_1.png'),
     emotions: [
       "感激的",
       "滿足的",
@@ -33,7 +33,7 @@ export const Emotion_Categories = {
     emoji: "😌",
     category: "Good",
     label: "Good",
-    image: require('./assets/emoji_2.png'),
+    image: require('../assets/emoji_2.png'),
     emotions: [
       "自在的",
       "頭腦清晰的",
@@ -57,7 +57,7 @@ export const Emotion_Categories = {
     emoji: "😶",
     category: "Neutral",
     label: "Neutral",
-    image: require('./assets/emoji_3.png'),
+    image: require('../assets/emoji_3.png'),
     emotions: [
         "害怕的",
         "焦慮的",
@@ -91,7 +91,7 @@ export const Emotion_Categories = {
     emoji:"😢",
     category: "Negative",
     label: "Negative",
-    image: require('./assets/emoji_4.png'),
+    image: require('../assets/emoji_4.png'),
     emotions: [
         "焦躁不安的",
         "憂慮的",
@@ -118,7 +118,7 @@ export const Emotion_Categories = {
     emoji:"😭",
     category: "Sad",
     label: "Saaad", 
-    image: require('./assets/emoji_5.png'),
+    image: require('../assets/emoji_5.png'),
     emotions: [
         "生氣的",
         "傲慢的",
