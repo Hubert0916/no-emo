@@ -7,7 +7,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import SelectEmoji from './Selectemoji';
 import ReviewScreen from './ReviewScreen';
 import CloudAnimation from './components/Cloud';
-import MoodTrackerCalendar from './Calendar'
+import MoodDiary from './moodDiary'
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -48,32 +48,11 @@ function HomeScreen() {
   );
 }
 
-function SomeStack() {
-  return (
-    <Stack.Navigator screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="Profile" component={SomeScreen} />
-    </Stack.Navigator>
-  );
-}
-
-function SomeScreen() {
-  const navigation = useNavigation();
-
-  return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <Text>
-        To be update...
-      </Text>
-    </View>
-  );
-}
-
-
 function MyTab() {
   return (
     <Tab.Navigator screenOptions={{ headerShown: false }}>
       <Tab.Screen name="Check-In" component={HomeStack} />
-      <Tab.Screen name="Diary" component={MoodTrackerCalendar} />
+      <Tab.Screen name="Diary" component={MoodDiary} />
     </Tab.Navigator>
   );
 }
