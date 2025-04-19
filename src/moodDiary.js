@@ -138,7 +138,7 @@ export default function MoodDiary() {
         <View style={styles.modalMask}>
           <View style={styles.modalBox}>
             <Text style={styles.modalTitle}>{modalDate}</Text>
-            <Text style={styles.modalPrompt}>今天的心情？：</Text>
+            <Text style={styles.modalPrompt}>今天的心情？</Text>
             <View style={styles.emojiChooser}>
               {allEmojis.map(e => (
                 <TouchableOpacity
