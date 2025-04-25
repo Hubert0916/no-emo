@@ -185,6 +185,7 @@ export default function SelectEmoji() {
 
   return (
     <View style={{ flex: 1, padding: 16, backgroundColor: '#fff' }}>
+    {/* small emoji list */}
     <View style={{ alignItems: 'center', marginBottom: 16 }}>
     <View style={{ flexDirection: 'row', width: 200, justifyContent: 'space-between' }}>
         {[...Array(5)].map((_, index) => {
@@ -211,6 +212,8 @@ export default function SelectEmoji() {
             })}
           </View>
         </View>
+
+    {/* category list */}
       <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 10 }}>
         {Object.keys(Emotion_Categories).map((categoryKey) => {
           const categoryData = Emotion_Categories[categoryKey];
@@ -241,6 +244,7 @@ export default function SelectEmoji() {
         })}
       </View>
 
+    {/* emotion list */}
       <FlatList
         data={currentEmotions}
         keyExtractor={(item) => item}
@@ -267,7 +271,7 @@ export default function SelectEmoji() {
         }}
       />
 
-      {/* 下一步按鈕 */}
+    {/* next step button */}
       <View style={{ marginTop: 20 }}>
         <Button title="下一步" onPress={goToViewScreen} />
       </View>

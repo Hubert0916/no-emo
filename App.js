@@ -7,6 +7,10 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import SelectEmoji from './selectemoji';
 import ReviewScreen from './ReviewScreen';
 import CloudAnimation from './Cloud';
+import ActiveMenu from './Timer/ActiveMenu';
+import MeditationTimer from './Timer/MeditationTimer';
+import WoodFish from './Timer/WoodFish';
+import MeditationCountdown from './Timer/MeditationCountdown';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -69,11 +73,22 @@ function SomeScreen() {
 }
 /* empty page end */
 
+function RelaxStack() {
+  return (
+    <Stack.Navigator screenOptions={{ headerShown: true }}>
+      <Stack.Screen name="ActiveMenu" component={ActiveMenu} options={{ title: '放鬆活動' }} />
+      <Stack.Screen name="MeditationTimer" component={MeditationTimer} options={{ title: '冥想計時器' }} />
+      <Stack.Screen name="WoodFish" component={WoodFish} options={{ title: '敲木魚' }} />
+      <Stack.Screen name="MeditationCountdown" component={MeditationCountdown} options={{ title: '冥想中...' }} />
+    </Stack.Navigator>
+  );
+}
 
 function MyTab() {
   return (
     <Tab.Navigator screenOptions={{ headerShown: false }}>
       <Tab.Screen name="Check-In" component={HomeStack} />
+      <Tab.Screen name="Relax" component={RelaxStack} /> 
       <Tab.Screen name="..." component={SomeStack} />
     </Tab.Navigator>
   );
