@@ -30,11 +30,11 @@ export default function WoodFish() {
       <TouchableWithoutFeedback onPress={handlePress}>
         <View style={styles.imageBox}>
           {/* 木魚圖 */}
-          <Image source={require('../assets/woodfish.png')} style={styles.woodfish} />
+          <Image source={require('../../assets/woodfish.png')} style={styles.woodfish} />
 
           {/* 棒子動畫圖 */}
           <Animated.Image
-            source={require('../assets/stick.png')}
+            source={require('../../assets/stick.png')}
             style={[
               styles.stick,
               {
