@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import { View, Image, Animated } from 'react-native';
+import {Animated } from 'react-native';
 
 const CloudAnimation = () => {
   const translateY = useRef(new Animated.Value(0)).current;

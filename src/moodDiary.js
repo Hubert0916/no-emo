@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react';
 import {
   View, Text, StyleSheet, TouchableOpacity,
-  PanResponder, Animated, Modal, TextInput, ScrollView, Button
+  PanResponder, Animated, Modal, TextInput, Button
 } from 'react-native';
 
 function getCalendarMatrix(year, month) {
