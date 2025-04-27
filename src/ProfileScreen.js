@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, ImageBackground, Alert } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'react-native';
+import { useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { jwtDecode } from "jwt-decode"
 
- // const API_URL = '';
+const apiUrl = process.env.EXPO_PUBLIC_API_URL;
 
-export default function AuthScreen({ navigation }) {
+export default function AuthScreen() {
   const [isRegister, setIsRegister] = useState(false);
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -19,7 +19,7 @@ export default function AuthScreen({ navigation }) {
         return;
       }
       try {
-        const res = await fetch(`${API_URL}/register`, {
+        const res = await fetch(`${apiUrl}/register`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ email, name, password }),
@@ -37,7 +37,7 @@ export default function AuthScreen({ navigation }) {
       }
     } else {
       try {
-        const res = await fetch(`${API_URL}/login`, {
+        const res = await fetch(`${apiUrl}/login`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ email, password }),
