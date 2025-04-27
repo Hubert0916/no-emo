@@ -34,3 +34,20 @@ yarn-error.*
 
 # typescript
 *.tsbuildinfo
+
+.vscode/                        # ← 個人設定
+.cache/                         # ← Babel / Metro 快取
+metro-cache/
+babel.config.js.__*__
+
+ios/build/                      # ← iOS 原生建置
+ios/Pods/
+ios/*.xcworkspace
+ios/xcuserdata/
+
+android/.gradle/                # ← Android 原生建置
+android/app/build/
+android/.idea/
+
+coverage/                       # ← 測試報告
+*.lcov
