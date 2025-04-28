@@ -57,8 +57,8 @@ function MyTab() {
     <Tab.Navigator screenOptions={{ headerShown: false }}>
       <Tab.Screen name="Check-In" component={HomeStack} />
       <Tab.Screen name="Relax" component={RelaxStack} /> 
-      <Tab.Screen name="..." component={SomeStack} />
       <Tab.Screen name="Diary" component={MoodDiary} />
+      <Tab.Screen name="..." component={SomeStack} />
     </Tab.Navigator>
   );
 }
