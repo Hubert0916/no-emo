@@ -1,6 +1,6 @@
 import { Button } from '@react-navigation/elements';
 import { Text, View, Image} from 'react-native';
-import CloudAnimation from './components/Cloud';
+import CloudAnimation from '../components/Cloud';
 import { useNavigation } from '@react-navigation/core';
 
 
@@ -10,7 +10,7 @@ export default function HomeScreen() {
   return (
     <View style={{ flex: 1, alignItems: "center" }}>
       <Image
-        source={require("../assets/gradient.png")}
+        source={require("../../assets/gradient.png")}
         style={{
           position: "absolute",
           top: 0,
