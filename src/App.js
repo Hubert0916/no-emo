@@ -10,6 +10,9 @@ import SelectEmoji from './Selectemoji';
 import ReviewScreen from './ReviewScreen';
 import ProfileScreen from './ProfileScreen'
 import MoodDiary from './moodDiary';
+import QuestionnaireScreen from './QuestionnaireScreen';
+import SummaryScreen from './SummaryScreen'; 
+
 import { MyTheme } from './components/Theme'
 
 const Stack = createStackNavigator();
@@ -46,6 +49,15 @@ function MyTab() {
       <Tab.Screen name="Diary" component={MoodDiary} />
       <Tab.Screen name="Profile" component={ProfileScreen} />
     </Tab.Navigator>
+  );
+}
+
+function QuestionnaireStack() {
+  return (
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="Questionnaire" component={QuestionnaireScreen} />
+      <Stack.Screen name="SummaryScreen" component={SummaryScreen} />
+    </Stack.Navigator>
   );
 }
 

@@ -3,8 +3,6 @@ import { View, Text, TextInput, TouchableOpacity, StyleSheet, ImageBackground, A
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { jwtDecode } from "jwt-decode"
 
- // const API_URL = '';
-
 export default function AuthScreen({ navigation }) {
   const [isRegister, setIsRegister] = useState(false);
   const [name, setName] = useState('');
@@ -25,14 +23,15 @@ export default function AuthScreen({ navigation }) {
           body: JSON.stringify({ email, name, password }),
         });
         if (res.status === 201) {
-          Alert.alert('註冊成功', '請使用新帳號登入');
-          setIsRegister(false);
-          setName(''); setPassword(''); setConfirmPassword('');
+        const data = await res.json(); // 若後端會回傳 token，可在此取出
+        await AsyncStorage.setItem('token', data.token); // 儲存 token（或改用 login 邏輯）
+        Alert.alert('註冊成功', '即將開始問卷');
+        navigation.replace('QuestionnaireScreen');
         } else {
           const data = await res.json();
           Alert.alert('註冊失敗', data.message || '請重試');
-        }
-      } catch (error) {
+}
+        } catch (error) {
         Alert.alert('錯誤', error.message);
       }
     } else {
