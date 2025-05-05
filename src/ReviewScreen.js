@@ -1,4 +1,3 @@
-import React from 'react';
 import { View, Text, ScrollView, Button } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { Emotion_Categories } from './Selectemoji';

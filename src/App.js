@@ -8,11 +8,10 @@ import MeditationCountdown from './Timer/MeditationCountdown';
 import HomeScreen from './HomeScreen'
 import SelectEmoji from './Selectemoji';
 import ReviewScreen from './ReviewScreen';
-import ProfileScreen from './ProfileScreen'
 import MoodDiary from './moodDiary';
+import ProfileScreen from './ProfileScreen';
 import QuestionnaireScreen from './QuestionnaireScreen';
-import SummaryScreen from './SummaryScreen'; 
-
+import SummaryScreen from './SummaryScreen';
 import { MyTheme } from './components/Theme'
 
 const Stack = createStackNavigator();
@@ -52,10 +51,11 @@ function MyTab() {
   );
 }
 
-function QuestionnaireStack() {
+function ProfileStack() {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="Questionnaire" component={QuestionnaireScreen} />
+      <Stack.Screen name="ProfileScreen" component={ProfileScreen} />
+      <Stack.Screen name="QuestionnaireScreen" component={QuestionnaireScreen} />
       <Stack.Screen name="SummaryScreen" component={SummaryScreen} />
     </Stack.Navigator>
   );
@@ -64,7 +64,8 @@ function QuestionnaireStack() {
 export default function App() {
   return (
     <NavigationContainer theme={MyTheme}>
-      <MyTab />
-    </NavigationContainer>
+      {/* <MyTab/> */}
+      <QuestionnaireScreen/> 
+      </NavigationContainer>
   );
 }

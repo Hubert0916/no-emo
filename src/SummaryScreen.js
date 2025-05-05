@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const API_URL = 'http://140.113.26.107:5000/apidocs/#'; // ← 請替換成實際 API 網址
+const apiUrl = process.env.EXPO_PUBLIC_API_URL;
 
 export default function SummaryScreen({ navigation }) {
   const [summary, setSummary] = useState('');
@@ -23,7 +23,7 @@ export default function SummaryScreen({ navigation }) {
   const fetchSummary = async () => {
     try {
       const token = await AsyncStorage.getItem('token');
-      const res = await fetch(`${API_URL}/questionnaire/summary`, {
+      const res = await fetch(`${apiUrl}/questionnaire/summary`, {
         method: 'GET',
         headers: {
           Authorization: `Bearer ${token}`,
@@ -41,7 +41,7 @@ export default function SummaryScreen({ navigation }) {
   const handleBackToHome = () => {
     navigation.reset({
       index: 0,
-      routes: [{ name: 'HomeScreen' }], // 根據你的 App 首頁名稱調整
+      routes: [{ name: 'HomeScreen' }], 
     });
   };
 

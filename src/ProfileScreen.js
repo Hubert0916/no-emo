@@ -1,9 +1,14 @@
-import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, ImageBackground, Alert } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'react-native';
+import { useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { jwtDecode } from "jwt-decode"
+import { useNavigation } from '@react-navigation/native';
 
-export default function AuthScreen({ navigation }) {
+
+const apiUrl = process.env.EXPO_PUBLIC_API_URL;
+
+export default function AuthScreen() {
+  const navigation = useNavigation();
   const [isRegister, setIsRegister] = useState(false);
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -17,35 +22,52 @@ export default function AuthScreen({ navigation }) {
         return;
       }
       try {
-        const res = await fetch(`${API_URL}/register`, {
+        const res = await fetch(`${apiUrl}/register`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ email, name, password }),
         });
         if (res.status === 201) {
-        const data = await res.json(); // 若後端會回傳 token，可在此取出
-        await AsyncStorage.setItem('token', data.token); // 儲存 token（或改用 login 邏輯）
-        Alert.alert('註冊成功', '即將開始問卷');
-        navigation.replace('QuestionnaireScreen');
+          Alert.alert('註冊成功', '請驗證後使用新帳號登入');
+          setIsRegister(false);
+          setName(''); setPassword(''); setConfirmPassword('');
         } else {
           const data = await res.json();
           Alert.alert('註冊失敗', data.message || '請重試');
-}
-        } catch (error) {
+        }
+      } catch (error) {
         Alert.alert('錯誤', error.message);
       }
     } else {
       try {
-        const res = await fetch(`${API_URL}/login`, {
+        const res = await fetch(`${apiUrl}/login`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ email, password }),
         });
+    
         if (res.status === 200) {
           const { token } = await res.json();
           const payload = jwtDecode(token);
           await AsyncStorage.setItem('token', token);
-          Alert.alert('登入成功❤️', '你只會停留在此頁面');
+    
+          // 檢查是否已填寫問卷
+          const checkRes = await fetch(`${apiUrl}/check_is_filled`, {
+            method: 'GET',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`,
+            }
+          });
+    
+          const checkData = await checkRes.json();
+    
+          if (checkData.is_filled) {
+            navigation.navigate('Check-In'); 
+          } else {
+            navigation.navigate('QuestionnaireScreen'); 
+          }
+    
         } else if (res.status === 401) {
           Alert.alert('登入失敗', '帳號或密碼錯誤');
         } else {
@@ -55,7 +77,7 @@ export default function AuthScreen({ navigation }) {
       } catch (error) {
         Alert.alert('錯誤', error.message);
       }
-    }
+    }    
   };
 
   return (
