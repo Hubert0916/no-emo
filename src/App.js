@@ -8,9 +8,11 @@ import MeditationCountdown from './Timer/MeditationCountdown';
 import HomeScreen from './HomeScreen'
 import SelectEmoji from './Selectemoji';
 import ReviewScreen from './ReviewScreen';
-import ProfileScreen from './ProfileScreen'
+import ProfileScreen from './ProfileScreen';
 import MoodDiary from './moodDiary';
-import { MyTheme } from './components/Theme'
+import { MyTheme } from './components/Theme';
+import RecommendResult from './RecommendResult';
+
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -22,6 +24,7 @@ function HomeStack() {
       <Stack.Screen name="Home" component={HomeScreen} />
       <Stack.Screen name="SelectEmoji" component={SelectEmoji} />
       <Stack.Screen name="Review" component={ReviewScreen} />
+      <Stack.Screen name="RecommendResult" component={RecommendResult} />
     </Stack.Navigator>
   );
 }
