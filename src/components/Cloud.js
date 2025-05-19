@@ -1,5 +1,5 @@
-import React, { useEffect, useRef } from 'react';
-import {Animated } from 'react-native';
+import { useEffect, useRef } from 'react';
+import { Animated } from 'react-native';
 
 const CloudAnimation = () => {
   const translateY = useRef(new Animated.Value(0)).current;
@@ -23,7 +23,7 @@ const CloudAnimation = () => {
 
   return (
     <Animated.Image
-      source={require('../../assets/cloud.png')}
+      source={require('../assets/cloud.png')}
       style={{
         width: 168,
         height: 100,

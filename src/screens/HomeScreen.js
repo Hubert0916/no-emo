@@ -1,6 +1,6 @@
 import { Button } from '@react-navigation/elements';
 import { Text, View, Image} from 'react-native';
-import CloudAnimation from './components/Cloud';
+import CloudAnimation from '../components/Cloud';
 import { useNavigation } from '@react-navigation/core';
 
 

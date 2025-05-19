@@ -1,16 +1,16 @@
 import { NavigationContainer} from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { MyTheme } from './components/Theme'
 import ActiveMenu from './Timer/ActiveMenu';
 import MeditationTimer from './Timer/MeditationTimer';
 import WoodFish from './Timer/WoodFish';
 import MeditationCountdown from './Timer/MeditationCountdown';
-import HomeScreen from './HomeScreen'
-import SelectEmoji from './Selectemoji';
-import ReviewScreen from './ReviewScreen';
-import ProfileScreen from './ProfileScreen';
-import MoodDiary from './moodDiary';
-import { MyTheme } from './components/Theme';
+import HomeScreen from './screens//HomeScreen'
+import SelectEmoji from './screens/SelectEmojiScreen';
+import ReviewScreen from './screens//ReviewScreen';
+import ProfileScreen from './screens/ProfileScreen';
+import DiaryScreen from './screens/DiaryScreen';
 import RecommendResult from './RecommendResult';
 
 
@@ -29,7 +29,6 @@ function HomeStack() {
   );
 }
 
-
 function RelaxStack() {
   return (
     <Stack.Navigator screenOptions={{ headerShown: true }}>
@@ -46,7 +45,7 @@ function MyTab() {
     <Tab.Navigator screenOptions={{ headerShown: false }}>
       <Tab.Screen name="Check-In" component={HomeStack} />
       <Tab.Screen name="Relax" component={RelaxStack} /> 
-      <Tab.Screen name="Diary" component={MoodDiary} />
+      <Tab.Screen name="Diary" component={DiaryScreen} />
       <Tab.Screen name="Profile" component={ProfileScreen} />
     </Tab.Navigator>
   );
