@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import Slider from '@react-native-community/slider';
 import { useNavigation } from '@react-navigation/native';
 
@@ -7,8 +7,8 @@ import {
   } from 'react-native';
   import { Audio } from 'expo-av';
 
-import bellSound from '../assets/Meditation Bell Sound 1.mp3';
-import backgroundMusic from '../assets/Meditation Sound April 8 2025.mp3'; 
+import bellSound from '../../assets/Meditation Bell Sound 1.mp3';
+import backgroundMusic from '../../assets/Meditation Sound April 8 2025.mp3'; 
 
 export default function MeditationTimer() {
     const navigation = useNavigation();
@@ -60,7 +60,7 @@ export default function MeditationTimer() {
       <Text style={styles.label}>背景音樂</Text>
       <ScrollView horizontal style={{ marginVertical: 12 }}>
         <View style={styles.soundItem}>
-          <Image source={require('../assets/forest.jpeg')} style={styles.soundImage} />
+          <Image source={require('../../assets/forest.jpeg')} style={styles.soundImage} />
           <Text>森林</Text>
         </View>
         {/* 你可以放更多背景圖 */}

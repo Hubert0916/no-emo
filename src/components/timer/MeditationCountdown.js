@@ -1,8 +1,8 @@
-import React, { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { Audio } from 'expo-av';
-import bellSound from '../assets/Meditation Bell Sound 1.mp3';
-import backgroundMusic from '../assets/Meditation Sound April 8 2025.mp3';
+import bellSound from '../../assets/Meditation Bell Sound 1.mp3';
+import backgroundMusic from '../../assets/Meditation Sound April 8 2025.mp3';
 
 export default function MeditationCountdown({ route, navigation }) {
   const { duration } = route.params;

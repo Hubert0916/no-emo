@@ -28,8 +28,6 @@ export const Emotion_Categories = {
       { text: "堅強的", emoji: "💪" },
       { text: "感謝的", emoji: "🫶" }
     ],
-    image: require('../assets/emoji_1.png'),
-    emotions: ["感激的", "滿足的", "有創意的", "有勇氣的", "熱情的", "興奮的", "激動的", "充實的", "開心的", "感恩的", "快樂的", "充滿希望的", "喜悅的", "自豪的", "滿意的", "堅強的", "感謝的"]
   },
   Good: {
     emoji: "😌",
@@ -51,10 +49,7 @@ export const Emotion_Categories = {
       { text: "有安全感的", emoji: "🛡️" },
       { text: "寧靜的", emoji: "🍃" },
       { text: "無憂無慮的", emoji: "🎈" }
-    ],
-    image: require('../assets/emoji_2.png'),
-    emotions: ["自在的", "頭腦清晰的", "鎮定的", "舒適的", "踏實的", "專注當下的", "平靜的", "活在當下的", "神清氣爽的", "放鬆的", "充分休息的", "有安全感的", "寧靜的", "無憂無慮的"]
-  },
+    ],},
   Neutral: {
     emoji: "😶",
     category: "Neutral",
@@ -86,8 +81,6 @@ export const Emotion_Categories = {
       { text: "懷疑的", emoji: "🧐" },
       { text: "左右為難的", emoji: "🤹" }
     ],
-    image: require('../assets/emoji_3.png'),
-    emotions: ["害怕的", "焦慮的", "冷漠的", "無感的", "憂慮的", "擔憂的", "無聊的", "慌張的", "擔心的", "矛盾的", "困惑的", "疏離的", "分心的", "漠不關心的", "失眠的", "懶散的", "混亂的", "心情複雜的", "緊張的", "驚慌的", "思緒紊亂的", "壓力大的", "懷疑的", "左右為難的"]
   },
   Negative: {
     emoji: "😢",
@@ -113,8 +106,6 @@ export const Emotion_Categories = {
       { text: "不安的", emoji: "😬" },
       { text: "擔心的", emoji: "😟" }
     ],
-    image: require('../assets/emoji_4.png'),
-    emotions: ["焦躁不安的", "憂慮的", "苦惱的", "坐立不安的", "手足無措的", "缺乏安全感的", "不堪重負的", "驚慌失措的", "疑神疑鬼的", "心事重重的", "心神不寧的", "顫抖的", "不穩定的", "神經緊繃的", "不確定的", "不安的", "擔心的"]
   },
   Sad: {
     emoji: "😭",
@@ -150,8 +141,6 @@ export const Emotion_Categories = {
       { text: "憤恨的", emoji: "😠" },
       { text: "記恨的", emoji: "🧾" }
     ],
-    image: require('../assets/emoji_5.png'),
-    emotions: ["生氣的", "傲慢的", "好勝的", "競爭心強的", "厭惡的", "反感的", "挫折的", "受挫的", "充滿厭惡感的", "不耐煩的", "嫉妒的", "悲觀的", "自我批評的", "惱怒的", "被打擾的", "思想封閉的", "固執的", "防備心重的", "羨慕的", "忌妒的", "充滿蔑視的", "脾氣暴躁的", "煩躁的", "惱火的", "愛批判人的", "憤恨的", "記恨的"]
   }
 };
 

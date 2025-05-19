@@ -1,8 +1,8 @@
 import { View, Text, StyleSheet, PanResponder} from 'react-native';
 import { useState, useRef } from 'react';
-import { getCalendarMatrix } from '../components/Calendar';
-import CalendarGrid from '../components/CalendarGrid';
-import MoodModal from '../components/MoodModal';
+import { getCalendarMatrix } from '../lib/getCalendarMatrix';
+import CalendarGrid from '../components/diary/CalendarGrid';
+import MoodModal from '../components/diary/MoodModal';
 
 export default function DiaryScreen() {
   const [currentYear, setCurrentYear] = useState(2025);

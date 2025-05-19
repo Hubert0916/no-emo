@@ -2,10 +2,10 @@ import { NavigationContainer} from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { MyTheme } from './components/Theme'
-import ActiveMenu from './Timer/ActiveMenu';
-import MeditationTimer from './Timer/MeditationTimer';
-import WoodFish from './Timer/WoodFish';
-import MeditationCountdown from './Timer/MeditationCountdown';
+import ActiveMenu from './components/timer/ActiveMenu';
+import MeditationTimer from './components/timer/MeditationTimer';
+import WoodFish from './components/timer/WoodFish';
+import MeditationCountdown from './components/timer/MeditationCountdown';
 import HomeScreen from './screens//HomeScreen'
 import SelectEmoji from './screens/SelectEmojiScreen';
 import ReviewScreen from './screens//ReviewScreen';
