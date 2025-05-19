@@ -12,6 +12,7 @@ import ReviewScreen from './screens//ReviewScreen';
 import ProfileScreen from './screens/ProfileScreen';
 import DiaryScreen from './screens/DiaryScreen';
 import UserProfileScreen from './screens/UserProfileScreen';
+import ProfileSetupScreen from './screens/ProfileSetupScreen';
 import RecommendResult from './RecommendResult';
 
 
@@ -45,10 +46,12 @@ function ProfileStack() {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen name="Auth" component={ProfileScreen} />
+      <Stack.Screen name="ProfileSetup" component={ProfileSetupScreen} />
       <Stack.Screen name="UserProfile" component={UserProfileScreen} />
     </Stack.Navigator>
   );
 }
+
 
 function MyTab() {
   return (

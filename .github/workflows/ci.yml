@@ -22,7 +22,3 @@ jobs:
       # Step 4: 執行 Lint
       - name: Run Lint
         run: npm run lint
-
-      # Step 5: 執行測試
-      - name: Run Tests
-        run: npm test

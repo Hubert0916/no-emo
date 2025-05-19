@@ -61,7 +61,12 @@ export default function AuthScreen() {
           const { token } = await res.json();
           await AsyncStorage.setItem('token', token);
           Alert.alert('登入成功', '歡迎!');
-          navigation.replace('UserProfile');
+          const userProfile = await AsyncStorage.getItem('user_profile');
+          if (userProfile) {
+            navigation.replace('UserProfile');
+          } else {
+            navigation.replace('ProfileSetup');
+          }
         }
         else if (res.status === 401) {
           Alert.alert('登入失敗', '帳號或密碼錯誤');
