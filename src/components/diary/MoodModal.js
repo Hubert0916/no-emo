@@ -5,6 +5,8 @@ import {
   TextInput,
   TouchableOpacity,
   StyleSheet,
+  TouchableWithoutFeedback,
+  Keyboard,
 } from "react-native";
 
 export default function MoodModal({
@@ -25,47 +27,58 @@ export default function MoodModal({
       animationType="fade"
       onRequestClose={onCancel}
     >
-      <View style={styles.modalMask}>
-        <View style={styles.modalBox}>
-          <Text style={styles.modalTitle}>{date}</Text>
-          <Text style={styles.modalPrompt}>今天的心情？</Text>
-          <View style={styles.emojiChooser}>
-            {allEmojis.map((e) => (
-              <TouchableOpacity
-                key={e}
-                style={[
-                  styles.emojiOption,
-                  selectedEmoji === e && styles.emojiSelected,
-                ]}
-                onPress={() => setSelectedEmoji(e)}
-              >
-                <Text style={styles.emoji}>{e}</Text>
-              </TouchableOpacity>
-            ))}
-          </View>
-          <Text style={styles.modalPrompt}>描述今天的心情～</Text>
-          <TextInput
-            value={inputText}
-            onChangeText={setInputText}
-            multiline
-            numberOfLines={4}
-            maxLength={128}
-            style={styles.input}
-          />
-          <View style={styles.modalBtns}>
-            <TouchableOpacity onPress={onCancel}>
-              <Text style={{ fontSize: 16, color: "#007AFF" }}>取消</Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={onSave}>
-              <Text
-                style={{ fontSize: 16, color: "#007AFF", fontWeight: "bold" }}
-              >
-                儲存
-              </Text>
-            </TouchableOpacity>
-          </View>
+      <TouchableWithoutFeedback
+        onPress={() => {
+          Keyboard.dismiss();
+          onCancel();
+        }}
+      >
+        <View style={styles.modalMask}>
+          <TouchableWithoutFeedback>
+            <View style={styles.modalBox}>
+              <View style={styles.headerRow}>
+                <TouchableOpacity style={styles.headerBtn} onPress={onCancel}>
+                  <Text style={styles.headerBtnText}>X</Text>
+                </TouchableOpacity>
+                <Text style={styles.modalTitle}>{date}</Text>
+                <View style={styles.headerBtn} />
+              </View>
+
+              <View style={styles.emojiChooser}>
+                {allEmojis.map((e) => (
+                  <TouchableOpacity
+                    key={e}
+                    style={[
+                      styles.emojiOption,
+                      selectedEmoji === e && styles.emojiSelected,
+                    ]}
+                    onPress={() => setSelectedEmoji(e)}
+                  >
+                    <Text style={styles.emoji}>{e}</Text>
+                  </TouchableOpacity>
+                ))}
+              </View>
+
+              <TextInput
+                value={inputText}
+                onChangeText={setInputText}
+                multiline
+                numberOfLines={4}
+                maxLength={256}
+                style={styles.input}
+                placeholder="描述心情，例如：今天去衝浪好快樂！"
+                placeholderTextColor="#A0A0A0"
+              />
+
+              <View style={styles.saveBtnWrapper}>
+                <TouchableOpacity onPress={onSave} style={styles.saveBtn}>
+                  <Text style={styles.saveIcon}>✔️</Text>
+                </TouchableOpacity>
+              </View>
+            </View>
+          </TouchableWithoutFeedback>
         </View>
-      </View>
+      </TouchableWithoutFeedback>
     </Modal>
   );
 }
@@ -78,34 +91,61 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   modalBox: {
-    width: "85%",
+    width: "80%",
     backgroundColor: "#fff",
-    borderRadius: 16,
+    borderRadius: 18,
     padding: 20,
     shadowColor: "#000",
-    shadowOpacity: 0.2,
-    shadowRadius: 10,
-    elevation: 10,
+    shadowOpacity: 0.16,
+    shadowRadius: 12,
+    elevation: 12,
+  },
+  headerRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    marginBottom: 8,
+  },
+  headerBtn: {
+    width: 36,
+    height: 36,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  headerBtnText: {
+    fontSize: 22,
+    fontWeight: "bold",
+    color: "#222",
   },
   modalTitle: {
+    flex: 1,
     fontSize: 20,
     fontWeight: "bold",
     textAlign: "center",
-    marginBottom: 12,
+    color: "#222",
   },
-  modalPrompt: { fontSize: 16, marginTop: 10, marginBottom: 4, color: "#333" },
+  moodLabel: {
+    fontSize: 16,
+    fontWeight: "bold",
+    color: "#444",
+    marginTop: 4,
+    marginBottom: 8,
+    marginLeft: 2,
+    letterSpacing: 1,
+  },
   emojiChooser: {
     flexDirection: "row",
-    justifyContent: "space-around",
+    justifyContent: "space-between",
     paddingVertical: 8,
+    marginBottom: 6,
   },
   emojiOption: {
     padding: 8,
-    borderRadius: 8,
+    borderRadius: 10,
   },
   emojiSelected: {
     backgroundColor: "#e0f7fa",
-    borderRadius: 8,
+    borderRadius: 10,
   },
   emoji: {
     fontSize: 28,
@@ -113,17 +153,30 @@ const styles = StyleSheet.create({
   input: {
     borderWidth: 1,
     borderColor: "#ddd",
-    borderRadius: 8,
-    textAlignVertical: 'top',
+    borderRadius: 10,
+    textAlignVertical: "top",
     padding: 12,
-    marginTop: 6,
-    height: 120,
-    fontSize: 16,
-    backgroundColor: "#f9f9f9",
+    marginTop: 8,
+    height: 128,
+    fontSize: 15,
+    backgroundColor: "#fafbfc",
+    marginBottom: 10,
   },
-  modalBtns: {
-    flexDirection: "row",
-    justifyContent: "space-around",
-    marginTop: 16,
+  saveBtnWrapper: {
+    marginTop: 10,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  saveBtn: {
+    width: 64,
+    height: 36,
+    borderRadius: 22,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  saveIcon: {
+    fontSize: 24,
+    color: "#333",
+    fontWeight: "bold",
   },
 });
