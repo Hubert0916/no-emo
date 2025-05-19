@@ -11,12 +11,10 @@ import SelectEmoji from './screens/SelectEmojiScreen';
 import ReviewScreen from './screens//ReviewScreen';
 import ProfileScreen from './screens/ProfileScreen';
 import DiaryScreen from './screens/DiaryScreen';
-import RecommendResult from './RecommendResult';
-
+import RecommendResult from '@/screens/RecommendResult';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
-
 
 function HomeStack() {
   return (

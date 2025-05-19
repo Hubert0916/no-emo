@@ -7,7 +7,7 @@ export const categoryOneToOneMap = {
 };
 
 // 2. 情緒分類常量（假設已存在於同目錄下）
-import { Emotion_Categories } from './screens/SelectEmojiScreen';
+import { Emotion_Categories } from '@/screens/SelectEmojiScreen';
 
 // 3. 根據加權選出最適合的一個活動 ID
 /**
