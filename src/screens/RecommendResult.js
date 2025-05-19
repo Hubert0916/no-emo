@@ -1,3 +1,4 @@
+// RecommendResult.js
 import { View, Text, Image, StyleSheet, TouchableOpacity, SafeAreaView } from 'react-native';
 import { useRoute, useNavigation } from '@react-navigation/native';
 
