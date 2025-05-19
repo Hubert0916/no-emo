@@ -200,8 +200,6 @@ export default function SelectEmoji() {
   })}
 </View>
 
-
-
       <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 10 }}>
         {Object.keys(Emotion_Categories).map((categoryKey) => {
           const categoryData = Emotion_Categories[categoryKey];

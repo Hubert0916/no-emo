@@ -1,6 +1,6 @@
 import { View, Text, TextInput, TouchableOpacity, Alert } from 'react-native';
 import { useState } from 'react';
-import { register, login } from '../lib/api/auth';
+import { register, login } from '@/lib/api/authRequest';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function AuthScreen() {
@@ -40,8 +40,9 @@ export default function AuthScreen() {
           Alert.alert('註冊失敗', 'Email已存在!');
         }
         else {
-          const data = await res.json();
-          Alert.alert('註冊失敗', data.message || '請重試');
+          const err = await res.json();
+          console.log(err);
+          Alert.alert('註冊失敗', err.message || '請重試');
         }
       } catch (error) {
         Alert.alert('錯誤', error.message);
