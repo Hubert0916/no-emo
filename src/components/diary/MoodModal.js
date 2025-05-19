@@ -30,11 +30,9 @@ export default function MoodModal({
       <TouchableWithoutFeedback
         onPress={() => {
           Keyboard.dismiss();
-          onCancel();
         }}
       >
         <View style={styles.modalMask}>
-          <TouchableWithoutFeedback>
             <View style={styles.modalBox}>
               <View style={styles.headerRow}>
                 <TouchableOpacity style={styles.headerBtn} onPress={onCancel}>
@@ -76,7 +74,6 @@ export default function MoodModal({
                 </TouchableOpacity>
               </View>
             </View>
-          </TouchableWithoutFeedback>
         </View>
       </TouchableWithoutFeedback>
     </Modal>
@@ -155,7 +152,7 @@ const styles = StyleSheet.create({
     borderColor: "#ddd",
     borderRadius: 10,
     textAlignVertical: "top",
-    padding: 12,
+    padding: 10,
     marginTop: 8,
     height: 128,
     fontSize: 15,

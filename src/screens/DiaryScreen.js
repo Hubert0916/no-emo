@@ -72,7 +72,7 @@ export default function DiaryScreen() {
   const calendarMatrix = getCalendarMatrix(currentYear, currentMonth);
 
   return (
-    <View style={styles.container}>
+    <View style={styles.container} {...panResponder.panHandlers}>
       <View style={styles.monthRow}>
         <TouchableOpacity onPress={prevMonth} style={styles.arrowBtn}>
           <Text style={styles.arrowText}>‹</Text>
@@ -85,7 +85,6 @@ export default function DiaryScreen() {
         </TouchableOpacity>
       </View>
 
-      {/* 星期標題 */}
       <View style={styles.weekHeader}>
         {["日", "一", "二", "三", "四", "五", "六"].map((w) => (
           <Text style={styles.weekHeaderText} key={w}>
@@ -95,7 +94,6 @@ export default function DiaryScreen() {
       </View>
 
       <CalendarGrid
-        panHandlers={panResponder.panHandlers}
         calendarMatrix={calendarMatrix}
         moodData={moodData}
         openModal={openModal}
