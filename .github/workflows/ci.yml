@@ -14,7 +14,6 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: '18' # ← 可根據你的專案 Node.js 版本修改
-          cache: 'npm'       # ← 啟用 npm 套件快取
 
       # Step 3: 安裝 npm 套件
       - name: Install dependencies
