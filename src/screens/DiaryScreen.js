@@ -5,10 +5,11 @@ import {
   PanResponder,
   TouchableOpacity,
 } from "react-native";
-import { useState, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import { getCalendarMatrix } from "../lib/getCalendarMatrix";
-import CalendarGrid from "../components/diary/CalendarGrid";
-import MoodModal from "../components/diary/MoodModal";
+import { saveDiary, getDiary } from "@/lib/api/diaryRequest";
+import CalendarGrid from "@/components/diary/CalendarGrid";
+import MoodModal from "@/components/diary/MoodModal";
 
 export default function DiaryScreen() {
   const [currentYear, setCurrentYear] = useState(2025);
@@ -19,6 +20,13 @@ export default function DiaryScreen() {
   const [selectedEmoji, setSelectedEmoji] = useState("");
   const [inputText, setInputText] = useState("");
   const allEmojis = ["😁", "🥰", "😠", "😢", "😞"];
+  const emojiMap = {
+    "😁": "開心",
+    "🥰": "幸福",
+    "😠": "生氣",
+    "😢": "難過",
+    "😞": "失望",
+  };
 
   const swipeHandledRef = useRef(false);
   const panResponder = PanResponder.create({
@@ -59,17 +67,50 @@ export default function DiaryScreen() {
     setModalVisible(true);
   };
 
-  const saveMood = () => {
+  const saveMood = async () => {
     setModalVisible(false);
     if (selectedEmoji) {
-      setMoodData((prev) => ({
-        ...prev,
+      const updated = {
+        ...moodData,
         [modalDate]: { emoji: selectedEmoji, text: inputText },
-      }));
+      };
+      setMoodData(updated);
+
+      const moodText = emojiMap[selectedEmoji];
+
+      try {
+        const res = await saveDiary(modalDate, moodText, inputText);
+        if (!res.ok) {
+          console.error("fail to save mood:", await res.text());
+        }
+      } catch (err) {
+        console.error("error occurs when saving mood:", err);
+      }
     }
   };
 
   const calendarMatrix = getCalendarMatrix(currentYear, currentMonth);
+
+  useEffect(() => {
+    async function loadLogs() {
+      try {
+        const logs = await getDiary();
+        const newMoodData = {};
+        logs.forEach((entry) => {
+          const emoji =
+            Object.entries(emojiMap).find(
+              ([_, label]) => label === entry.mood
+            )?.[0] || "";
+          newMoodData[entry.date] = { emoji, text: "" };
+        });
+        setMoodData(newMoodData);
+      } catch (err) {
+        console.error("failed to load diary data:", err);
+      }
+    }
+
+    loadLogs();
+  }, []);
 
   return (
     <View style={styles.container} {...panResponder.panHandlers}>

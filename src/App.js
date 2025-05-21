@@ -13,12 +13,11 @@ import ProfileScreen from './screens/ProfileScreen';
 import DiaryScreen from './screens/DiaryScreen';
 import UserProfileScreen from './screens/UserProfileScreen';
 import ProfileSetupScreen from './screens/ProfileSetupScreen';
-import RecommendResult from './RecommendResult';
+import RecommendResult from '@/screens/RecommendResult';
 
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
-
 
 function HomeStack() {
   return (
