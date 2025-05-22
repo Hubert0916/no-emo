@@ -102,7 +102,7 @@ export default function DiaryScreen() {
           console.warn("Token expired or unauthorized; caching mood locally");
         } else {
           console.warn(
-            `Failed to save mood to server, status code: ${res.status}`
+            `Failed to save mood to server, status code: ${res.status}`,
           );
         }
         await cacheMoodLocally(entry);

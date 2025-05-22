@@ -1,7 +1,7 @@
 import { getToken } from "@/lib/util/getToken";
 const apiUrl = process.env.EXPO_PUBLIC_API_URL;
 
-export async function saveDiary(date, diary ,mood) {
+export async function saveDiary(date, diary, mood) {
   const token = await getToken();
   const res = await fetch(`${apiUrl}/users/log`, {
     method: "POST",
@@ -15,23 +15,21 @@ export async function saveDiary(date, diary ,mood) {
 }
 
 export async function getDiary() {
-    const token = await getToken();
-    const res = await fetch(`${apiUrl}/users/log`, {
-        method: "GET",
-        headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`, 
-        },
-    });
+  const token = await getToken();
+  const res = await fetch(`${apiUrl}/users/log`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  });
 
-    if(res.ok)
-    {
-      const data = await res.json();
-      return data.logs;
-    }
-    else{
-      console.error(res.status);
-      console.error(await res.text())
-      return null;
-    }
+  if (res.ok) {
+    const data = await res.json();
+    return data.logs;
+  } else {
+    console.error(res.status);
+    console.error(await res.text());
+    return null;
+  }
 }

@@ -1,10 +1,10 @@
 // https://docs.expo.dev/guides/using-eslint/
 // eslint.config.js
-const { defineConfig } = require('eslint/config');
+const { defineConfig } = require("eslint/config");
 const expoConfig = require("eslint-config-expo/flat");
-const pluginReact = require('eslint-plugin-react');
-const prettierPlugin = require('eslint-plugin-prettier');
-const globals = require('globals');
+const pluginReact = require("eslint-plugin-react");
+const prettierPlugin = require("eslint-plugin-prettier");
+const globals = require("globals");
 
 module.exports = defineConfig([
   expoConfig,
@@ -12,16 +12,16 @@ module.exports = defineConfig([
   {
     plugins: { prettier: prettierPlugin },
     rules: {
-      'prettier/prettier': 'warn',
+      "prettier/prettier": "warn",
     },
   },
 
   {
-    files: ['**/*.{js,jsx}'],
+    files: ["**/*.{js,jsx}"],
     languageOptions: {
       parserOptions: {
         ecmaVersion: 2021,
-        sourceType: 'module',
+        sourceType: "module",
         ecmaFeatures: { jsx: true },
       },
       globals: {
@@ -34,21 +34,21 @@ module.exports = defineConfig([
     },
     settings: {
       react: {
-        version: 'detect',
+        version: "detect",
       },
-      'import/resolver': {
-        'babel-module': {},
+      "import/resolver": {
+        "babel-module": {},
       },
     },
     rules: {
-      'react/react-in-jsx-scope': 'off',
-      'react/prop-types': 'off',
-      'no-unused-vars': 'warn',
-      'no-undef': 'off',
+      "react/react-in-jsx-scope": "off",
+      "react/prop-types": "off",
+      "no-unused-vars": "warn",
+      "no-undef": "off",
     },
   },
 
   {
-    ignores: ['dist/*'],
+    ignores: ["dist/*"],
   },
 ]);

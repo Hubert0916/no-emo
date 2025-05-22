@@ -2,7 +2,7 @@ import { View, Text, TextInput, TouchableOpacity, Alert } from "react-native";
 import { useState } from "react";
 import { register, login } from "@/lib/api/authRequest";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import Feather from '@react-native-vector-icons/feather';
+import Feather from "@react-native-vector-icons/feather";
 import { useNavigation } from "@react-navigation/native";
 
 export default function AuthScreen() {
@@ -154,7 +154,14 @@ export default function AuthScreen() {
           </TouchableOpacity>
 
           {isRegister && (
-            <Text style={{ fontSize: 12, color: "#888", marginBottom: 8,  paddingLeft: 10 }}>
+            <Text
+              style={{
+                fontSize: 12,
+                color: "#888",
+                marginBottom: 8,
+                paddingLeft: 10,
+              }}
+            >
               密碼需包含大寫、小寫英文字母、特殊符號，且長度不少於 8 位
             </Text>
           )}

@@ -1,7 +1,6 @@
-import { Text, View, Image, StyleSheet, TouchableOpacity} from 'react-native';
-import CloudAnimation from '../components/Cloud';
-import { useNavigation } from '@react-navigation/core';
-
+import { Text, View, Image, StyleSheet, TouchableOpacity } from "react-native";
+import CloudAnimation from "../components/Cloud";
+import { useNavigation } from "@react-navigation/core";
 
 export default function HomeScreen() {
   const navigation = useNavigation();
@@ -24,7 +23,7 @@ export default function HomeScreen() {
         今天好嗎?
       </Text>
       <CloudAnimation />
-       <TouchableOpacity
+      <TouchableOpacity
         style={styles.bigButton}
         onPress={() => navigation.navigate("SelectEmoji")}
       >
@@ -46,11 +45,11 @@ const styles = StyleSheet.create({
     width: 200,
     height: 60,
     borderRadius: 30,
-    backgroundColor: "#c9bfa5",   // 你喜歡的底色
+    backgroundColor: "#c9bfa5", // 你喜歡的底色
     justifyContent: "center",
     alignItems: "center",
-    elevation: 4,                  // Android 陰影
-    shadowColor: "#000",           // iOS 陰影
+    elevation: 4, // Android 陰影
+    shadowColor: "#000", // iOS 陰影
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.3,
     shadowRadius: 4,
