@@ -1,0 +1,24 @@
+name: CI
+on: [push]
+
+jobs:
+  lint-and-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step 1: 下載你的程式碼
+      - uses: actions/checkout@v2
+
+      # Step 2: 使用 Node.js 環境
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '18' # ← 可根據你的專案 Node.js 版本修改
+
+      # Step 3: 安裝 npm 套件
+      - name: Install dependencies
+        run: npm ci # ✅ 建議用 ci：速度快且保證和 lockfile 一致
+
+      # Step 4: 執行 Lint
+      - name: Run Lint
+        run: npm run lint

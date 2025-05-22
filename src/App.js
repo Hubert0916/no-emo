@@ -10,7 +10,10 @@ import SelectEmoji from './screens/SelectEmojiScreen';
 import ReviewScreen from './screens//ReviewScreen';
 import ProfileScreen from './screens/ProfileScreen';
 import DiaryScreen from './screens/DiaryScreen';
+import UserProfileScreen from './screens/UserProfileScreen';
+import ProfileSetupScreen from './screens/ProfileSetupScreen';
 import RecommendResult from '@/screens/RecommendResult';
+
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -37,13 +40,24 @@ function RelaxStack() {
   );
 }
 
+function ProfileStack() {
+  return (
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="Auth" component={ProfileScreen} />
+      <Stack.Screen name="ProfileSetup" component={ProfileSetupScreen} />
+      <Stack.Screen name="UserProfile" component={UserProfileScreen} />
+    </Stack.Navigator>
+  );
+}
+
+
 function MyTab() {
   return (
     <Tab.Navigator screenOptions={{ headerShown: false }}>
       <Tab.Screen name="Check-In" component={HomeStack} />
       <Tab.Screen name="Relax" component={RelaxStack} /> 
       <Tab.Screen name="Diary" component={DiaryScreen} />
-      <Tab.Screen name="Profile" component={ProfileScreen} />
+      <Tab.Screen name="Profile" component={ProfileStack} />
     </Tab.Navigator>
   );
 }

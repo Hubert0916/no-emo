@@ -1,14 +1,20 @@
-import { View, Text, TextInput, TouchableOpacity, Alert } from "react-native";
-import { useState } from "react";
-import { register, login } from "@/lib/api/authRequest";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { View, Text, TextInput, TouchableOpacity, Alert } from 'react-native';
+import { useState } from 'react';
+import { register, login } from '@/lib/api/authRequest';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import Feather from 'react-native-vector-icons/Feather';
+import { useNavigation } from '@react-navigation/native';
+
 
 export default function AuthScreen() {
   const [isRegister, setIsRegister] = useState(false);
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const navigation = useNavigation();
 
   const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -46,11 +52,19 @@ export default function AuthScreen() {
 
         if (res.status === 200) {
           const { token } = await res.json();
-          await AsyncStorage.setItem("token", token);
-          Alert.alert("登入成功", "歡迎!");
-        } else if (res.status === 401) {
-          Alert.alert("登入失敗", "帳號或密碼錯誤");
-        } else {
+          await AsyncStorage.setItem('token', token);
+          Alert.alert('登入成功', '歡迎!');
+          const userProfile = await AsyncStorage.getItem('user_profile');
+          if (userProfile) {
+            navigation.replace('UserProfile');
+          } else {
+            navigation.replace('ProfileSetup');
+          }
+        }
+        else if (res.status === 401) {
+          Alert.alert('登入失敗', '帳號或密碼錯誤');
+        }
+        else {
           const data = await res.json();
           Alert.alert("登入失敗", data.msg || "請重試");
         }
@@ -96,16 +110,7 @@ export default function AuthScreen() {
 
         {isRegister && (
           <TextInput
-            style={{
-              height: 50,
-              borderColor: "#CCE8CF",
-              borderWidth: 1,
-              borderRadius: 15,
-              marginBottom: 15,
-              paddingHorizontal: 15,
-              backgroundColor: "#FFF",
-              fontSize: 16,
-            }}
+            style={inputStyle}
             autoCapitalize="none"
             autoComplete="off"
             autoCorrect={false}
@@ -117,16 +122,7 @@ export default function AuthScreen() {
         )}
 
         <TextInput
-          style={{
-            height: 50,
-            borderColor: "#CCE8CF",
-            borderWidth: 1,
-            borderRadius: 15,
-            marginBottom: 15,
-            paddingHorizontal: 15,
-            backgroundColor: "#FFF",
-            fontSize: 16,
-          }}
+          style={inputStyle}
           autoCapitalize="none"
           autoComplete="off"
           autoCorrect={false}
@@ -137,6 +133,28 @@ export default function AuthScreen() {
           keyboardType="email-address"
         />
 
+        {/* 密碼輸入框 + 顯示/隱藏按鈕 */}
+        <View style={{ position: 'relative', marginBottom: 15 }}>
+          <TextInput
+            style={{ ...inputStyle, paddingRight: 45 }}
+            autoCapitalize="none"
+            autoComplete="off"
+            autoCorrect={false}
+            placeholder="密碼"
+            placeholderTextColor="#888"
+            value={password}
+            onChangeText={setPassword}
+            secureTextEntry={!showPassword}
+          />
+          <TouchableOpacity
+            onPress={() => setShowPassword(!showPassword)}
+            style={{ position: 'absolute', right: 15, top: 12 }}
+          >
+            <Feather name={showPassword ? 'eye-off' : 'eye'} size={20} color="#888" />
+          </TouchableOpacity>
+        </View>
+
+        {/* 確認密碼（註冊時） */}
         <TextInput
           style={{
             height: 50,
@@ -164,18 +182,9 @@ export default function AuthScreen() {
         )}
 
         {isRegister && (
-          <>
+          <View style={{ position: 'relative', marginBottom: 15 }}>
             <TextInput
-              style={{
-                height: 50,
-                borderColor: "#CCE8CF",
-                borderWidth: 1,
-                borderRadius: 15,
-                marginBottom: 5,
-                paddingHorizontal: 15,
-                backgroundColor: "#FFF",
-                fontSize: 16,
-              }}
+              style={{ ...inputStyle, paddingRight: 45 }}
               autoCapitalize="none"
               autoComplete="off"
               autoCorrect={false}
@@ -183,12 +192,15 @@ export default function AuthScreen() {
               placeholderTextColor="#888"
               value={confirmPassword}
               onChangeText={setConfirmPassword}
-              secureTextEntry
+              secureTextEntry={!showConfirmPassword}
             />
-            <Text style={{ fontSize: 12, color: "#888", marginBottom: 10 }}>
-              請再次輸入密碼以確認
-            </Text>
-          </>
+            <TouchableOpacity
+              onPress={() => setShowConfirmPassword(!showConfirmPassword)}
+              style={{ position: 'absolute', right: 15, top: 12 }}
+            >
+              <Feather name={showConfirmPassword ? 'eye-off' : 'eye'} size={20} color="#888" />
+            </TouchableOpacity>
+          </View>
         )}
 
         <TouchableOpacity
@@ -231,3 +243,14 @@ export default function AuthScreen() {
     </View>
   );
 }
+
+const inputStyle = {
+  height: 50,
+  borderColor: '#CCE8CF',
+  borderWidth: 1,
+  borderRadius: 15,
+  marginBottom: 15,
+  paddingHorizontal: 15,
+  backgroundColor: '#FFF',
+  fontSize: 16,
+};
