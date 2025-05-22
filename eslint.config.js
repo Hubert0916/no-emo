@@ -1,5 +1,3 @@
-
-
 // https://docs.expo.dev/guides/using-eslint/
 // eslint.config.js
 const { defineConfig } = require('eslint/config');
