@@ -1,13 +1,13 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, Image, StyleSheet } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useEffect, useState } from "react";
+import { View, Text, Image, StyleSheet } from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 export default function UserProfileScreen() {
   const [profile, setProfile] = useState(null);
 
   useEffect(() => {
     const loadProfile = async () => {
-      const data = await AsyncStorage.getItem('user_profile');
+      const data = await AsyncStorage.getItem("user_profile");
       if (data) {
         setProfile(JSON.parse(data));
       }
@@ -37,9 +37,9 @@ export default function UserProfileScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F3F4F6',
-    justifyContent: 'center',
-    alignItems: 'center',
+    backgroundColor: "#F3F4F6",
+    justifyContent: "center",
+    alignItems: "center",
     padding: 30,
   },
   avatar: {
@@ -47,21 +47,21 @@ const styles = StyleSheet.create({
     height: 120,
     borderRadius: 60,
     marginBottom: 20,
-    backgroundColor: '#EEE',
+    backgroundColor: "#EEE",
   },
   name: {
     fontSize: 24,
-    fontWeight: '600',
-    color: '#333',
+    fontWeight: "600",
+    color: "#333",
     marginBottom: 10,
   },
   bio: {
     fontSize: 16,
-    color: '#666',
-    textAlign: 'center',
+    color: "#666",
+    textAlign: "center",
   },
   text: {
     fontSize: 20,
-    color: '#555',
+    color: "#555",
   },
 });

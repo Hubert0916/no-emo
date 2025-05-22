@@ -4,6 +4,7 @@ import { register, login } from "@/lib/api/authRequest";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Feather from "@react-native-vector-icons/feather";
 import { useNavigation } from "@react-navigation/native";
+import { useAuth } from "@/contexts/AuthContext";
 
 export default function AuthScreen() {
   const [isRegister, setIsRegister] = useState(false);
@@ -14,6 +15,7 @@ export default function AuthScreen() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const navigation = useNavigation();
+  const { login: authLogin } = useAuth();
 
   const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
@@ -51,7 +53,8 @@ export default function AuthScreen() {
 
         if (res.status === 200) {
           const { token } = await res.json();
-          await AsyncStorage.setItem("token", token);
+          await authLogin(token);
+
           Alert.alert("登入成功", "歡迎!");
           const userProfile = await AsyncStorage.getItem("user_profile");
           if (userProfile) {

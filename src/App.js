@@ -1,3 +1,4 @@
+import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
@@ -14,6 +15,7 @@ import DiaryScreen from "./screens/DiaryScreen";
 import UserProfileScreen from "./screens/UserProfileScreen";
 import ProfileSetupScreen from "./screens/ProfileSetupScreen";
 import RecommendResult from "@/screens/RecommendResult";
+import { AuthProvider } from "./contexts/AuthContext";
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -111,8 +113,10 @@ function MyTab() {
 
 export default function App() {
   return (
-    <NavigationContainer>
-      <MyTab />
-    </NavigationContainer>
+    <AuthProvider>
+      <NavigationContainer>
+        <MyTab />
+      </NavigationContainer>
+    </AuthProvider>
   );
 }
