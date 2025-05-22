@@ -3,6 +3,7 @@ import {
   View,
   TextInput,
   Button,
+  SafeAreaView,
   Image,
   Text,
   StyleSheet,
@@ -20,6 +21,17 @@ export default function ProfileSetupScreen() {
   const [name, setName] = useState('');
   const [bio, setBio] = useState('');
   const [photo, setPhoto] = useState(null);
+  const activityTagMap = {
+  '感官享受': 'food',
+  '自我反思': 'meditation',
+  '生活整理': 'cleanUpRoom',
+  '情境轉換': 'watchMovie',
+  '情緒療癒': 'musicRecommendation',
+  '身體活動': 'goForAWalk',
+};
+  const activityTags = Object.entries(activityTagMap); // 產生 [['感官享受', 'food'], ...]
+  const [selectedTags, setSelectedTags] = useState([]);
+
 
   useEffect(() => {
     (async () => {
@@ -41,6 +53,14 @@ export default function ProfileSetupScreen() {
     }
   };
 
+  const toggleTag = (tagValue) => {
+    if (selectedTags.includes(tagValue)) {
+      setSelectedTags(selectedTags.filter((t) => t !== tagValue));
+    } else {
+      setSelectedTags([...selectedTags, tagValue]);
+    }
+  };
+
   const handleSubmit = async () => {
     if (!name) {
       Alert.alert('請輸入姓名');
@@ -51,6 +71,7 @@ export default function ProfileSetupScreen() {
       name,
       bio,
       photo,
+      preferredActivities: selectedTags,
     };
   
     await AsyncStorage.setItem('user_profile', JSON.stringify(userProfile));
@@ -59,6 +80,7 @@ export default function ProfileSetupScreen() {
   };
   
   return (
+    <SafeAreaView style={styles.container}>
     <ScrollView contentContainerStyle={styles.container}>
       <Text style={styles.title}>完善你的個人資料</Text>
 
@@ -87,17 +109,36 @@ export default function ProfileSetupScreen() {
         onChangeText={setBio}
       />
 
+       <View style={{ width: '100%', marginTop: 20 }}>
+        <Text style={styles.questionTitle}>你心情不好的時候會喜歡做哪些類別的活動？</Text>
+        <Text style={{ color: '#666', marginBottom: 10 }}>可以幫助小天使幫你找適合的活動喔！（可複選）</Text>
+        {activityTags.map(([tagName, tagValue]) => (
+          <TouchableOpacity
+            key={tagValue}
+            onPress={() => toggleTag(tagValue)}
+            style={[
+              styles.tagOption,
+              selectedTags.includes(tagValue) && styles.tagSelected,
+            ]}
+          >
+            <Text style={styles.tagText}>{tagName}</Text>
+          </TouchableOpacity>
+        ))}
+      </View>
+
       <TouchableOpacity style={styles.button} onPress={handleSubmit}>
         <Text style={styles.buttonText}>完成設定</Text>
       </TouchableOpacity>
     </ScrollView>
+  </SafeAreaView>
+
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     padding: 30,
-    backgroundColor: '#F9FAFB',
+    backgroundColor: '#F2F2F2', // 更中性的淺灰色背景
     flexGrow: 1,
     alignItems: 'center',
   },
@@ -105,14 +146,14 @@ const styles = StyleSheet.create({
     fontSize: 22,
     fontWeight: '600',
     marginBottom: 20,
-    color: '#333',
+    color: '#455A64', 
   },
   input: {
     width: '100%',
     backgroundColor: '#fff',
     borderRadius: 12,
     borderWidth: 1,
-    borderColor: '#ddd',
+    borderColor: '#DADADA', // 淺粉色邊框
     padding: 15,
     marginBottom: 20,
     fontSize: 16,
@@ -124,16 +165,38 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   placeholderImage: {
-    width: 120,
+   width: 120,
     height: 120,
     borderRadius: 60,
-    backgroundColor: '#EEE',
+    backgroundColor: '#EBEBEB', 
     justifyContent: 'center',
     alignItems: 'center',
     marginBottom: 20,
   },
+  questionTitle: {
+    fontSize: 18,
+    fontWeight: '500',
+    marginBottom: 10,
+    color: '#455A64', 
+  },
+  tagOption: {
+    padding: 12,
+    borderWidth: 1,
+    borderColor: '#DADADA', 
+    borderRadius: 8,
+    marginBottom: 10,
+    backgroundColor: '#FFF',
+  },
+  tagText: {
+    fontSize: 16,
+    color: '#455A64', // 溫暖的褐色文字
+  },
+  tagSelected: {
+    backgroundColor: '#E0E6ED', // 柔和的粉橙色背景
+    borderColor: '#7895B2', // 更深的粉橙色邊框
+  },
   button: {
-    backgroundColor: '#4CAF50',
+    backgroundColor: '#7895B2', // 柔和的粉橙色按鈕
     paddingVertical: 15,
     paddingHorizontal: 50,
     borderRadius: 10,
