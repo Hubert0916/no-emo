@@ -7,9 +7,19 @@ import {
 } from "react-native";
 import { useState, useEffect, useRef } from "react";
 import { getCalendarMatrix } from "../lib/getCalendarMatrix";
+import { getToken } from "@/lib/util/getToken";
+import { cacheMoodLocally } from "@/lib/util/cacheMoodLocally";
 import { saveDiary, getDiary } from "@/lib/api/diaryRequest";
 import CalendarGrid from "@/components/diary/CalendarGrid";
 import MoodModal from "@/components/diary/MoodModal";
+
+const moodOptions = [
+  { emoji: "😁", label: "開心" },
+  { emoji: "🥰", label: "幸福" },
+  { emoji: "😠", label: "生氣" },
+  { emoji: "😢", label: "難過" },
+  { emoji: "😞", label: "失望" },
+];
 
 export default function DiaryScreen() {
   const [currentYear, setCurrentYear] = useState(2025);
@@ -19,15 +29,6 @@ export default function DiaryScreen() {
   const [modalDate, setModalDate] = useState("");
   const [selectedEmoji, setSelectedEmoji] = useState("");
   const [inputText, setInputText] = useState("");
-  const allEmojis = ["😁", "🥰", "😠", "😢", "😞"];
-  const emojiMap = {
-    "😁": "開心",
-    "🥰": "幸福",
-    "😠": "生氣",
-    "😢": "難過",
-    "😞": "失望",
-  };
-
   const swipeHandledRef = useRef(false);
   const panResponder = PanResponder.create({
     onMoveShouldSetPanResponder: (_, g) =>
@@ -69,23 +70,46 @@ export default function DiaryScreen() {
 
   const saveMood = async () => {
     setModalVisible(false);
-    if (selectedEmoji) {
-      const updated = {
-        ...moodData,
-        [modalDate]: { emoji: selectedEmoji, text: inputText },
-      };
-      setMoodData(updated);
+    if (!selectedEmoji) return;
 
-      const moodText = emojiMap[selectedEmoji];
+    // Update UI immediately
+    const updated = {
+      ...moodData,
+      [modalDate]: { emoji: selectedEmoji, text: inputText },
+    };
+    setMoodData(updated);
 
-      try {
-        const res = await saveDiary(modalDate, moodText, inputText);
-        if (!res.ok) {
-          console.error("fail to save mood:", await res.text());
+    const moodText =
+      moodOptions.find((m) => m.emoji === selectedEmoji)?.label || "";
+
+    const entry = {
+      date: modalDate,
+      diary: inputText,
+      mood: moodText,
+    };
+
+    const token = await getToken();
+    if (!token) {
+      console.warn("No token found, caching mood locally");
+      await cacheMoodLocally(entry);
+      return;
+    }
+
+    try {
+      const res = await saveDiary(modalDate, inputText, moodText);
+      if (!res.ok) {
+        if (res.status === 401) {
+          console.warn("Token expired or unauthorized; caching mood locally");
+        } else {
+          console.warn(
+            `Failed to save mood to server, status code: ${res.status}`
+          );
         }
-      } catch (err) {
-        console.error("error occurs when saving mood:", err);
+        await cacheMoodLocally(entry);
       }
+    } catch (err) {
+      console.error("Network error while saving mood; caching locally:", err);
+      await cacheMoodLocally(entry);
     }
   };
 
@@ -95,13 +119,12 @@ export default function DiaryScreen() {
     async function loadLogs() {
       try {
         const logs = await getDiary();
+        if (!logs) return;
         const newMoodData = {};
         logs.forEach((entry) => {
           const emoji =
-            Object.entries(emojiMap).find(
-              ([_, label]) => label === entry.mood
-            )?.[0] || "";
-          newMoodData[entry.date] = { emoji, text: "" };
+            moodOptions.find((m) => m.label === entry.mood)?.emoji || "";
+          newMoodData[entry.date] = { emoji, text: entry.diary || "" };
         });
         setMoodData(newMoodData);
       } catch (err) {
@@ -149,7 +172,7 @@ export default function DiaryScreen() {
         setInputText={setInputText}
         onCancel={() => setModalVisible(false)}
         onSave={saveMood}
-        allEmojis={allEmojis}
+        allEmojis={moodOptions.map((m) => m.emoji)}
       />
 
       <TouchableOpacity
