@@ -1,6 +1,7 @@
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import Ionicons from "@expo/vector-icons/Ionicons";
 import ActiveMenu from "./components/timer/ActiveMenu";
 import MeditationTimer from "./components/timer/MeditationTimer";
 import WoodFish from "./components/timer/WoodFish";
@@ -67,7 +68,39 @@ function ProfileStack() {
 
 function MyTab() {
   return (
-    <Tab.Navigator screenOptions={{ headerShown: false }}>
+    <Tab.Navigator
+      screenOptions={({ route }) => ({
+        headerShown: false,
+        // 定義每個 tab 的 icon
+        tabBarIcon: ({ focused, color, size }) => {
+          let iconName;
+
+          switch (route.name) {
+            case "Check-In":
+              iconName = focused
+                ? "checkmark-circle"
+                : "checkmark-circle-outline";
+              break;
+            case "Relax":
+              iconName = focused ? "heart" : "heart-outline";
+              break;
+            case "Diary":
+              iconName = focused ? "book" : "book-outline";
+              break;
+            case "Profile":
+              iconName = focused ? "person" : "person-outline";
+              break;
+            default:
+              iconName = "ellipse";
+          }
+
+          return <Ionicons name={iconName} size={size} color={color} />;
+        },
+        // active / inactive 顏色
+        tabBarActiveTintColor: "#4CAF50",
+        tabBarInactiveTintColor: "#999",
+      })}
+    >
       <Tab.Screen name="Check-In" component={HomeStack} />
       <Tab.Screen name="Relax" component={RelaxStack} />
       <Tab.Screen name="Diary" component={DiaryScreen} />
