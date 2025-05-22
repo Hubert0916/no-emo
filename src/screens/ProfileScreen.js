@@ -1,17 +1,16 @@
-import { View, Text, TextInput, TouchableOpacity, Alert } from 'react-native';
-import { useState } from 'react';
-import { register, login } from '@/lib/api/authRequest';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import Feather from 'react-native-vector-icons/Feather';
-import { useNavigation } from '@react-navigation/native';
-
+import { View, Text, TextInput, TouchableOpacity, Alert } from "react-native";
+import { useState } from "react";
+import { register, login } from "@/lib/api/authRequest";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import Feather from '@react-native-vector-icons/feather';
+import { useNavigation } from "@react-navigation/native";
 
 export default function AuthScreen() {
   const [isRegister, setIsRegister] = useState(false);
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const navigation = useNavigation();
@@ -52,19 +51,17 @@ export default function AuthScreen() {
 
         if (res.status === 200) {
           const { token } = await res.json();
-          await AsyncStorage.setItem('token', token);
-          Alert.alert('登入成功', '歡迎!');
-          const userProfile = await AsyncStorage.getItem('user_profile');
+          await AsyncStorage.setItem("token", token);
+          Alert.alert("登入成功", "歡迎!");
+          const userProfile = await AsyncStorage.getItem("user_profile");
           if (userProfile) {
-            navigation.replace('UserProfile');
+            navigation.replace("UserProfile");
           } else {
-            navigation.replace('ProfileSetup');
+            navigation.replace("ProfileSetup");
           }
-        }
-        else if (res.status === 401) {
-          Alert.alert('登入失敗', '帳號或密碼錯誤');
-        }
-        else {
+        } else if (res.status === 401) {
+          Alert.alert("登入失敗", "帳號或密碼錯誤");
+        } else {
           const data = await res.json();
           Alert.alert("登入失敗", data.msg || "請重試");
         }
@@ -133,10 +130,9 @@ export default function AuthScreen() {
           keyboardType="email-address"
         />
 
-        {/* 密碼輸入框 + 顯示/隱藏按鈕 */}
-        <View style={{ position: 'relative', marginBottom: 15 }}>
+        <View>
           <TextInput
-            style={{ ...inputStyle, paddingRight: 45 }}
+            style={{ ...inputStyle, marginBottom: 4, paddingRight: 45 }}
             autoCapitalize="none"
             autoComplete="off"
             autoCorrect={false}
@@ -148,41 +144,24 @@ export default function AuthScreen() {
           />
           <TouchableOpacity
             onPress={() => setShowPassword(!showPassword)}
-            style={{ position: 'absolute', right: 15, top: 12 }}
+            style={{ position: "absolute", right: 15, top: 12 }}
           >
-            <Feather name={showPassword ? 'eye-off' : 'eye'} size={20} color="#888" />
+            <Feather
+              name={showPassword ? "eye-off" : "eye"}
+              size={20}
+              color="#888"
+            />
           </TouchableOpacity>
+
+          {isRegister && (
+            <Text style={{ fontSize: 12, color: "#888", marginBottom: 8,  paddingLeft: 10 }}>
+              密碼需包含大寫、小寫英文字母、特殊符號，且長度不少於 8 位
+            </Text>
+          )}
         </View>
 
-        {/* 確認密碼（註冊時） */}
-        <TextInput
-          style={{
-            height: 50,
-            borderColor: "#CCE8CF",
-            borderWidth: 1,
-            borderRadius: 15,
-            marginBottom: 5,
-            paddingHorizontal: 15,
-            backgroundColor: "#FFF",
-            fontSize: 16,
-          }}
-          autoCapitalize="none"
-          autoComplete="off"
-          autoCorrect={false}
-          placeholder="密碼"
-          placeholderTextColor="#888"
-          value={password}
-          onChangeText={setPassword}
-          secureTextEntry
-        />
         {isRegister && (
-          <Text style={{ fontSize: 12, color: "#888", marginBottom: 10 }}>
-            密碼需包含大寫、小寫英文字母、特殊符號，且長度不少於 8 位
-          </Text> 
-        )}
-
-        {isRegister && (
-          <View style={{ position: 'relative', marginBottom: 15 }}>
+          <View>
             <TextInput
               style={{ ...inputStyle, paddingRight: 45 }}
               autoCapitalize="none"
@@ -196,9 +175,13 @@ export default function AuthScreen() {
             />
             <TouchableOpacity
               onPress={() => setShowConfirmPassword(!showConfirmPassword)}
-              style={{ position: 'absolute', right: 15, top: 12 }}
+              style={{ position: "absolute", right: 15, top: 12 }}
             >
-              <Feather name={showConfirmPassword ? 'eye-off' : 'eye'} size={20} color="#888" />
+              <Feather
+                name={showConfirmPassword ? "eye-off" : "eye"}
+                size={20}
+                color="#888"
+              />
             </TouchableOpacity>
           </View>
         )}
@@ -246,11 +229,11 @@ export default function AuthScreen() {
 
 const inputStyle = {
   height: 50,
-  borderColor: '#CCE8CF',
+  borderColor: "#CCE8CF",
   borderWidth: 1,
   borderRadius: 15,
   marginBottom: 15,
   paddingHorizontal: 15,
-  backgroundColor: '#FFF',
+  backgroundColor: "#FFF",
   fontSize: 16,
 };
