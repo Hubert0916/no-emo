@@ -30,7 +30,6 @@ export async function fetchDiaryFromServer() {
     const data = await res.json();
     return data.logs;
   } else {
-    console.error(res.status);
     console.error(await res.text());
     return null;
   }
