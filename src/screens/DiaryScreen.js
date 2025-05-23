@@ -155,13 +155,11 @@ export default function DiaryScreen() {
     };
 
     if (!token) {
-      console.warn("No token found, caching mood locally");
       await cacheMoodLocally(entry);
       return;
     }
 
     try {
-      console.log("save diary...");
       const res = await uploadDiaryToServer(modalDate, inputText, moodText);
       if (!res.ok) {
         console.warn(
