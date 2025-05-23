@@ -1,12 +1,17 @@
-import { View, Animated, StyleSheet } from 'react-native';
-import DayCell from './DayCell';
+import { View, Animated, StyleSheet } from "react-native";
+import DayCell from "./DayCell";
 
-export default function CalendarGrid({ panHandlers, calendarMatrix, moodData, openModal }) {
+export default function CalendarGrid({
+  panHandlers,
+  calendarMatrix,
+  moodData,
+  openModal,
+}) {
   return (
     <Animated.View {...panHandlers}>
       {calendarMatrix.map((week, i) => (
         <View style={styles.weekRow} key={i}>
-          {week.map(day => (
+          {week.map((day) => (
             <DayCell
               key={day.dateString}
               day={day}
@@ -21,5 +26,5 @@ export default function CalendarGrid({ panHandlers, calendarMatrix, moodData, op
 }
 
 const styles = StyleSheet.create({
-  weekRow: { flexDirection: 'row', marginVertical: 5 },
+  weekRow: { flexDirection: "row", marginVertical: 5 },
 });

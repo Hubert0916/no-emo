@@ -5,11 +5,25 @@ import {
   PanResponder,
   TouchableOpacity,
 } from "react-native";
-import { useState, useEffect, useRef } from "react";
-import { getCalendarMatrix } from "../lib/getCalendarMatrix";
-import { saveDiary, getDiary } from "@/lib/api/diaryRequest";
+import { useState, useEffect, useRef, useCallback } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { getCalendarMatrix } from "../lib/util/getCalendarMatrix";
+import { cacheMoodLocally } from "@/lib/util/cacheMoodLocally";
+import {
+  uploadDiaryToServer,
+  fetchDiaryFromServer,
+} from "@/lib/api/diaryRequest";
 import CalendarGrid from "@/components/diary/CalendarGrid";
 import MoodModal from "@/components/diary/MoodModal";
+import { useAuth } from "@/contexts/AuthContext";
+
+const moodOptions = [
+  { emoji: "😁", label: "開心" },
+  { emoji: "🥰", label: "幸福" },
+  { emoji: "😠", label: "生氣" },
+  { emoji: "😢", label: "難過" },
+  { emoji: "😞", label: "失望" },
+];
 
 export default function DiaryScreen() {
   const [currentYear, setCurrentYear] = useState(2025);
@@ -19,16 +33,8 @@ export default function DiaryScreen() {
   const [modalDate, setModalDate] = useState("");
   const [selectedEmoji, setSelectedEmoji] = useState("");
   const [inputText, setInputText] = useState("");
-  const allEmojis = ["😁", "🥰", "😠", "😢", "😞"];
-  const emojiMap = {
-    "😁": "開心",
-    "🥰": "幸福",
-    "😠": "生氣",
-    "😢": "難過",
-    "😞": "失望",
-  };
-
   const swipeHandledRef = useRef(false);
+  const { token } = useAuth();
   const panResponder = PanResponder.create({
     onMoveShouldSetPanResponder: (_, g) =>
       Math.abs(g.dx) > Math.abs(g.dy) && Math.abs(g.dx) > 20,
@@ -67,50 +73,115 @@ export default function DiaryScreen() {
     setModalVisible(true);
   };
 
-  const saveMood = async () => {
-    setModalVisible(false);
-    if (selectedEmoji) {
-      const updated = {
-        ...moodData,
-        [modalDate]: { emoji: selectedEmoji, text: inputText },
-      };
-      setMoodData(updated);
+  const loadLocalDiaryOnly = async () => {
+    try {
+      const rawPending = await AsyncStorage.getItem("pendingMoods");
+      const pending = rawPending ? JSON.parse(rawPending) : [];
 
-      const moodText = emojiMap[selectedEmoji];
+      const moodMap = {};
+      pending.forEach(({ date, diary, mood }) => {
+        const emoji = moodOptions.find((m) => m.label === mood)?.emoji || "";
+        moodMap[date] = {
+          emoji,
+          text: diary,
+        };
+      });
 
-      try {
-        const res = await saveDiary(modalDate, moodText, inputText);
-        if (!res.ok) {
-          console.error("fail to save mood:", await res.text());
-        }
-      } catch (err) {
-        console.error("error occurs when saving mood:", err);
+      setMoodData(moodMap);
+    } catch (error) {
+      console.error("Failed to load local diary:", error);
+    }
+  };
+
+  const syncAndLoadDiary = useCallback(async () => {
+    const rawPending = await AsyncStorage.getItem("pendingMoods");
+    const pending = rawPending ? JSON.parse(rawPending) : [];
+
+    let remoteLogs = [];
+    if (token) {
+      remoteLogs = (await fetchDiaryFromServer()) || [];
+    }
+
+    const remoteMap = {};
+    remoteLogs.forEach((entry) => {
+      remoteMap[entry.date] = entry;
+    });
+
+    if (token && pending.length > 0) {
+      for (const { date, diary, mood } of pending) {
+        await uploadDiaryToServer(date, diary, mood);
       }
+      await AsyncStorage.removeItem("pendingMoods");
+    }
+
+    const moodMap = {};
+    remoteLogs.forEach((entry) => {
+      const emoji =
+        moodOptions.find((m) => m.label === entry.mood)?.emoji || "";
+      moodMap[entry.date] = {
+        emoji,
+        text: entry.diary,
+      };
+    });
+
+    pending.forEach(({ date, diary, mood }) => {
+      const emoji = moodOptions.find((m) => m.label === mood)?.emoji || "";
+      moodMap[date] = {
+        emoji,
+        text: diary,
+      };
+    });
+
+    setMoodData(moodMap);
+  }, [token, setMoodData]);
+
+  const saveDiaryToLocal = async () => {
+    setModalVisible(false);
+    if (!selectedEmoji) return;
+
+    const updated = {
+      ...moodData,
+      [modalDate]: { emoji: selectedEmoji, text: inputText },
+    };
+    setMoodData(updated);
+
+    const moodText =
+      moodOptions.find((m) => m.emoji === selectedEmoji)?.label || "";
+
+    const entry = {
+      date: modalDate,
+      diary: inputText,
+      mood: moodText,
+    };
+
+    if (!token) {
+      await cacheMoodLocally(entry);
+      return;
+    }
+
+    try {
+      const res = await uploadDiaryToServer(modalDate, inputText, moodText);
+      if (!res.ok) {
+        console.warn(
+          `Failed to save mood to server, status code: ${res.status}`,
+        );
+        await cacheMoodLocally(entry);
+      }
+    } catch (err) {
+      console.error("Network error while saving mood; caching locally:", err);
+      await cacheMoodLocally(entry);
     }
   };
 
   const calendarMatrix = getCalendarMatrix(currentYear, currentMonth);
 
   useEffect(() => {
-    async function loadLogs() {
-      try {
-        const logs = await getDiary();
-        const newMoodData = {};
-        logs.forEach((entry) => {
-          const emoji =
-            Object.entries(emojiMap).find(
-              ([_, label]) => label === entry.mood
-            )?.[0] || "";
-          newMoodData[entry.date] = { emoji, text: "" };
-        });
-        setMoodData(newMoodData);
-      } catch (err) {
-        console.error("failed to load diary data:", err);
-      }
+    if (token) {
+      syncAndLoadDiary();
+    } else {
+      loadLocalDiaryOnly();
     }
-
-    loadLogs();
-  }, []);
+  }, [token, syncAndLoadDiary]);
 
   return (
     <View style={styles.container} {...panResponder.panHandlers}>
@@ -148,8 +219,8 @@ export default function DiaryScreen() {
         inputText={inputText}
         setInputText={setInputText}
         onCancel={() => setModalVisible(false)}
-        onSave={saveMood}
-        allEmojis={allEmojis}
+        onSave={saveDiaryToLocal}
+        allEmojis={moodOptions.map((m) => m.emoji)}
       />
 
       <TouchableOpacity

@@ -33,47 +33,47 @@ export default function MoodModal({
         }}
       >
         <View style={styles.modalMask}>
-            <View style={styles.modalBox}>
-              <View style={styles.headerRow}>
-                <TouchableOpacity style={styles.headerBtn} onPress={onCancel}>
-                  <Text style={styles.headerBtnText}>X</Text>
-                </TouchableOpacity>
-                <Text style={styles.modalTitle}>{date}</Text>
-                <View style={styles.headerBtn} />
-              </View>
-
-              <View style={styles.emojiChooser}>
-                {allEmojis.map((e) => (
-                  <TouchableOpacity
-                    key={e}
-                    style={[
-                      styles.emojiOption,
-                      selectedEmoji === e && styles.emojiSelected,
-                    ]}
-                    onPress={() => setSelectedEmoji(e)}
-                  >
-                    <Text style={styles.emoji}>{e}</Text>
-                  </TouchableOpacity>
-                ))}
-              </View>
-
-              <TextInput
-                value={inputText}
-                onChangeText={setInputText}
-                multiline
-                numberOfLines={4}
-                maxLength={256}
-                style={styles.input}
-                placeholder="描述心情，例如：今天去衝浪好快樂！"
-                placeholderTextColor="#A0A0A0"
-              />
-
-              <View style={styles.saveBtnWrapper}>
-                <TouchableOpacity onPress={onSave} style={styles.saveBtn}>
-                  <Text style={styles.saveIcon}>✔️</Text>
-                </TouchableOpacity>
-              </View>
+          <View style={styles.modalBox}>
+            <View style={styles.headerRow}>
+              <TouchableOpacity style={styles.headerBtn} onPress={onCancel}>
+                <Text style={styles.headerBtnText}>X</Text>
+              </TouchableOpacity>
+              <Text style={styles.modalTitle}>{date}</Text>
+              <View style={styles.headerBtn} />
             </View>
+
+            <View style={styles.emojiChooser}>
+              {allEmojis.map((e) => (
+                <TouchableOpacity
+                  key={e}
+                  style={[
+                    styles.emojiOption,
+                    selectedEmoji === e && styles.emojiSelected,
+                  ]}
+                  onPress={() => setSelectedEmoji(e)}
+                >
+                  <Text style={styles.emoji}>{e}</Text>
+                </TouchableOpacity>
+              ))}
+            </View>
+
+            <TextInput
+              value={inputText}
+              onChangeText={setInputText}
+              multiline
+              numberOfLines={4}
+              maxLength={256}
+              style={styles.input}
+              placeholder="描述心情，例如：今天去衝浪好快樂！"
+              placeholderTextColor="#A0A0A0"
+            />
+
+            <View style={styles.saveBtnWrapper}>
+              <TouchableOpacity onPress={onSave} style={styles.saveBtn}>
+                <Text style={styles.saveIcon}>✔️</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
         </View>
       </TouchableWithoutFeedback>
     </Modal>

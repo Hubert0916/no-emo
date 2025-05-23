@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 import {
   View,
   TextInput,
@@ -10,16 +10,16 @@ import {
   TouchableOpacity,
   Alert,
   ScrollView,
-} from 'react-native';
-import * as ImagePicker from 'expo-image-picker';
-import { useNavigation } from '@react-navigation/native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-
+} from "react-native";
+import * as ImagePicker from "expo-image-picker";
+import { useNavigation } from "@react-navigation/native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useAuth } from "@/contexts/AuthContext";
 
 export default function ProfileSetupScreen() {
   const navigation = useNavigation();
-  const [name, setName] = useState('');
-  const [bio, setBio] = useState('');
+  const [name, setName] = useState("");
+  const [bio, setBio] = useState("");
   const [photo, setPhoto] = useState(null);
   const activityTagMap = {
   '感官享受': 'food',
@@ -32,12 +32,14 @@ export default function ProfileSetupScreen() {
   const activityTags = Object.entries(activityTagMap); // 產生 [['感官享受', 'food'], ...]
   const [selectedTags, setSelectedTags] = useState([]);
 
+  const { logout } = useAuth();
 
   useEffect(() => {
     (async () => {
-      const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
-      if (status !== 'granted') {
-        Alert.alert('權限錯誤', '請開啟相簿權限來上傳照片');
+      const { status } =
+        await ImagePicker.requestMediaLibraryPermissionsAsync();
+      if (status !== "granted") {
+        Alert.alert("權限錯誤", "請開啟相簿權限來上傳照片");
       }
     })();
   }, []);
@@ -63,22 +65,22 @@ export default function ProfileSetupScreen() {
 
   const handleSubmit = async () => {
     if (!name) {
-      Alert.alert('請輸入姓名');
+      Alert.alert("請輸入姓名");
       return;
     }
-  
+
     const userProfile = {
       name,
       bio,
       photo,
       preferredActivities: selectedTags,
     };
-  
-    await AsyncStorage.setItem('user_profile', JSON.stringify(userProfile));
-  
-    navigation.replace('UserProfile');
+
+    await AsyncStorage.setItem("user_profile", JSON.stringify(userProfile));
+
+    navigation.replace("UserProfile");
   };
-  
+
   return (
     <SafeAreaView style={styles.container}>
     <ScrollView contentContainerStyle={styles.container}>
@@ -89,7 +91,7 @@ export default function ProfileSetupScreen() {
           <Image source={{ uri: photo }} style={styles.profileImage} />
         ) : (
           <View style={styles.placeholderImage}>
-            <Text style={{ color: '#999' }}>點擊上傳大頭貼</Text>
+            <Text style={{ color: "#999" }}>點擊上傳大頭貼</Text>
           </View>
         )}
       </TouchableOpacity>
@@ -129,6 +131,16 @@ export default function ProfileSetupScreen() {
       <TouchableOpacity style={styles.button} onPress={handleSubmit}>
         <Text style={styles.buttonText}>完成設定</Text>
       </TouchableOpacity>
+
+      <TouchableOpacity
+        style={styles.button}
+        onPress={async () => {
+          await logout();
+          navigation.replace("Auth");
+        }}
+      >
+        <Text style={styles.buttonText}>登出</Text>
+      </TouchableOpacity>
     </ScrollView>
   </SafeAreaView>
 
@@ -140,17 +152,17 @@ const styles = StyleSheet.create({
     padding: 30,
     backgroundColor: '#F2F2F2', // 更中性的淺灰色背景
     flexGrow: 1,
-    alignItems: 'center',
+    alignItems: "center",
   },
   title: {
     fontSize: 22,
-    fontWeight: '600',
+    fontWeight: "600",
     marginBottom: 20,
     color: '#455A64', 
   },
   input: {
-    width: '100%',
-    backgroundColor: '#fff',
+    width: "100%",
+    backgroundColor: "#fff",
     borderRadius: 12,
     borderWidth: 1,
     borderColor: '#DADADA', // 淺粉色邊框
@@ -203,8 +215,8 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   buttonText: {
-    color: '#fff',
+    color: "#fff",
     fontSize: 16,
-    fontWeight: '600',
+    fontWeight: "600",
   },
 });
