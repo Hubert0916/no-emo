@@ -56,26 +56,30 @@ export default function AuthScreen() {
 
     } else {
       try {
-        const res = await login({ email, password });
+        const res = await login();
+        const result = await res.json();
+        console.log(result); // 看有沒有 response 回來
+        Alert.alert('成功', 'HTTPS 請求成功');
+        // const res = await login({ email, password });
 
-        if (res.status === 200) {
-          const { token } = await res.json();
-          await AsyncStorage.setItem('token', token);
-          Alert.alert('登入成功', '歡迎!');
-          const userProfile = await AsyncStorage.getItem('user_profile');
-          if (userProfile) {
-            navigation.replace('UserProfile');
-          } else {
-            navigation.replace('ProfileSetup');
-          }
-        }
-        else if (res.status === 401) {
-          Alert.alert('登入失敗', '帳號或密碼錯誤');
-        }
-        else {
-          const data = await res.json();
-          Alert.alert('錯誤', data.message || '請重試');
-        }
+        // if (res.status === 200) {
+        //   const { token } = await res.json();
+        //   await AsyncStorage.setItem('token', token);
+        //   Alert.alert('登入成功', '歡迎!');
+        //   const userProfile = await AsyncStorage.getItem('user_profile');
+        //   if (userProfile) {
+        //     navigation.replace('UserProfile');
+        //   } else {
+        //     navigation.replace('ProfileSetup');
+        //   }
+        // }
+        // else if (res.status === 401) {
+        //   Alert.alert('登入失敗', '帳號或密碼錯誤');
+        // }
+        // else {
+        //   const data = await res.json();
+        //   Alert.alert('錯誤', data.message || '請重試');
+        // }
       } catch (error) {
         Alert.alert('錯誤', error.message);
       }
