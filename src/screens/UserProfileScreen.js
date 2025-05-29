@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native'; 
+import { getUserProfile } from '@/lib/api/profileRequest'; 
 
 
 export default function UserProfileScreen() {
@@ -10,13 +11,31 @@ export default function UserProfileScreen() {
 
   useEffect(() => {
     const loadProfile = async () => {
-      const data = await AsyncStorage.getItem("user_profile");
-      if (data) {
-        setProfile(JSON.parse(data));
-      }
-    };
-    loadProfile();
-  }, []);
+      try {
+        const cached = await AsyncStorage.getItem('user_profile');
+        if (cached) {
+          setProfile(JSON.parse(cached));
+          }
+        } catch (e) {
+          console.error('讀取快取失敗', e);
+        }
+
+        // 再從後端拿取最新資料
+        const remote = await getUserProfile();
+        if (remote) {
+          setProfile(remote);
+          // 更新本地快取
+          try {
+            await AsyncStorage.setItem('user_profile', JSON.stringify(remote));
+          } catch (e) {
+            console.error('快取更新失敗', e);
+          }
+        }
+        setLoading(false);
+      };
+      loadProfile();
+    }, []);
+
 
   const handleLogout = async () => {
     await AsyncStorage.multiRemove(['token', 'user_profile']);
