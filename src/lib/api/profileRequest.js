@@ -1,4 +1,6 @@
 import { getToken } from "../util/getToken";
+const apiUrl = process.env.EXPO_PUBLIC_API_URL;
+
 
 export async function getUserProfile() {
   const token = getToken();

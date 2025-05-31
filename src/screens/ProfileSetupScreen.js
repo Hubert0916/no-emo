@@ -84,7 +84,6 @@ export default function ProfileSetupScreen() {
     }
 
     await AsyncStorage.setItem("user_profile", JSON.stringify(userProfile));
-
     navigation.replace("UserProfile");
   };
 

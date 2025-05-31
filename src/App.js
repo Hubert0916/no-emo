@@ -15,6 +15,7 @@ import UserProfileScreen from "./screens/UserProfileScreen";
 import ProfileSetupScreen from "./screens/ProfileSetupScreen";
 import RecommendResult from "@/screens/RecommendResult";
 import { AuthProvider } from "./contexts/AuthContext";
+import Theme from './Theme';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -72,10 +73,8 @@ function MyTab() {
     <Tab.Navigator
       screenOptions={({ route }) => ({
         headerShown: false,
-        // 定義每個 tab 的 icon
         tabBarIcon: ({ focused, color, size }) => {
           let iconName;
-
           switch (route.name) {
             case "Check-In":
               iconName = focused
@@ -94,12 +93,19 @@ function MyTab() {
             default:
               iconName = "ellipse";
           }
-
           return <Ionicons name={iconName} size={size} color={color} />;
         },
-        // active / inactive 顏色
-        tabBarActiveTintColor: "#4CAF50",
-        tabBarInactiveTintColor: "#999",
+        tabBarActiveTintColor: Theme.Colors.primary, // 使用主題色
+        tabBarInactiveTintColor: Theme.Colors.placeholder, // 使用主題色
+        tabBarStyle: {
+          backgroundColor: Theme.Colors.surface, // Tab Bar 背景色
+          borderTopColor: Theme.Colors.border, // Tab Bar 頂部邊框顏色
+          // 你也可以在這裡設定其他 tabBarStyle 屬性，如 height
+        },
+        tabBarLabelStyle: {
+          fontSize: Theme.Fonts.sizes.xs, // Tab Bar 文字大小
+          fontWeight: Theme.Fonts.weights.medium,
+        },
       })}
     >
       <Tab.Screen name="Check-In" component={HomeStack} />
