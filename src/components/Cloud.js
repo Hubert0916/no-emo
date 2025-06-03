@@ -23,7 +23,7 @@ const CloudAnimation = () => {
 
   return (
     <Animated.Image
-      source={require("../assets/cloud.png")}
+      source={require("../assets/cloud1.png")}
       style={{
         width: 168,
         height: 100,

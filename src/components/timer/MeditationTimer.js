@@ -5,8 +5,7 @@ import { useNavigation } from '@react-navigation/native';
 import {
     View, Text, StyleSheet, TouchableOpacity, ScrollView, Image
   } from 'react-native';
-  import { Audio } from 'expo-av';
-
+import { Audio } from 'expo-audio';
 import bellSound from '../../assets/Meditation Bell Sound 1.mp3';
 import backgroundMusic from '../../assets/Meditation Sound April 8 2025.mp3'; 
 

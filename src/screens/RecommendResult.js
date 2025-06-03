@@ -2,6 +2,7 @@
 import { View, Text, Image, StyleSheet, TouchableOpacity, SafeAreaView } from 'react-native';
 import { useRoute, useNavigation } from '@react-navigation/native';
 
+
 // 1. 活動資料對照表：ID → 詳細資訊
 const activityData = {
   food: {

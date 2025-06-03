@@ -15,6 +15,7 @@ import * as ImagePicker from "expo-image-picker";
 import { useNavigation } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useAuth } from "@/contexts/AuthContext";
+import { updateUserProfile } from "@/lib/api/profileRequest";
 
 export default function ProfileSetupScreen() {
   const navigation = useNavigation();
@@ -72,12 +73,17 @@ export default function ProfileSetupScreen() {
     const userProfile = {
       name,
       bio,
-      photo,
+      profile: photo,
       preferredActivities: selectedTags,
     };
 
-    await AsyncStorage.setItem("user_profile", JSON.stringify(userProfile));
+    const filled = await setUserIsFilled();
+    if (!filled) {
+      Alert.alert('錯誤', '設定填寫狀態失敗');
+      return;
+    }
 
+    await AsyncStorage.setItem("user_profile", JSON.stringify(userProfile));
     navigation.replace("UserProfile");
   };
 
