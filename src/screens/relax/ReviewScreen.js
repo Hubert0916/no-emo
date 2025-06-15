@@ -2,7 +2,7 @@ import { View, Text, ScrollView, Button } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { Emotion_Categories } from '@/screens/emotion/SelectEmojiScreen';
+import { Emotion_Categories } from '@/screens/relax/SelectEmojiScreen';
 import { getRecommendation } from '@/lib/services/recommendationService';
 
 export default function ReviewScreen({ route }) {
@@ -52,4 +52,4 @@ export default function ReviewScreen({ route }) {
       </View>
     </SafeAreaView>
   );
-}
+} 

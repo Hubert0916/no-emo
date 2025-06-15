@@ -305,4 +305,4 @@ export default function SelectEmoji() {
       </View>
     </SafeAreaView>
   );
-}
+} 
