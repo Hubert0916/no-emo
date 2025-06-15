@@ -1,16 +1,16 @@
-import { useEffect, useState, useRef } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import React, { useEffect, useState, useRef } from 'react';
+import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import { Audio } from 'expo-av';
-import bellSound from '../../assets/Meditation Bell Sound 1.mp3';
-import backgroundMusic from '../../assets/Meditation Sound April 8 2025.mp3';
+import bellSound from '@/assets/Meditation Bell Sound 1.mp3';
+import backgroundMusic from '@/assets/Meditation Sound April 8 2025.mp3';
 
 export default function MeditationCountdown({ route, navigation }) {
   const { duration } = route.params;
   const [secondsLeft, setSecondsLeft] = useState(duration * 60);
-  const bgmSoundRef = useRef(null); // ✅ 使用 useRef 儲存音樂實例
+  const bgmSoundRef = useRef(null); // Use useRef to store music instance
 
   useEffect(() => {
-    // 初始化：播放鈴聲 + 音樂
+    // Initialize: play bell sound + music
     const initSound = async () => {
       const { sound: chime } = await Audio.Sound.createAsync(bellSound);
       await chime.playAsync();
@@ -35,7 +35,7 @@ export default function MeditationCountdown({ route, navigation }) {
       });
     }, 1000);
 
-    // ✅ 清除背景音效
+    // Clear background sound effects
     return () => {
       clearInterval(timer);
       if (bgmSoundRef.current) {

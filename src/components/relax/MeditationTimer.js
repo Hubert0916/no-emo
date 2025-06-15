@@ -6,12 +6,12 @@ import {
     View, Text, StyleSheet, TouchableOpacity, ScrollView, Image
   } from 'react-native';
 import { Audio } from 'expo-audio';
-import bellSound from '../../assets/Meditation Bell Sound 1.mp3';
-import backgroundMusic from '../../assets/Meditation Sound April 8 2025.mp3'; 
+import bellSound from '@/assets/Meditation Bell Sound 1.mp3';
+import backgroundMusic from '@/assets/Meditation Sound April 8 2025.mp3'; 
 
 export default function MeditationTimer() {
     const navigation = useNavigation();
-  const [duration, setDuration] = useState(10); // 分鐘
+  const [duration, setDuration] = useState(10); // minutes
   const [isPlaying, setIsPlaying] = useState(false);
   const bgmSoundRef = useRef(null);
 
@@ -43,7 +43,7 @@ export default function MeditationTimer() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.label}>冥想時間</Text>
+      <Text style={styles.label}>Meditation Time</Text>
       <View style={styles.sliderRow}>
         <Slider
           style={{ flex: 1 }}
@@ -53,14 +53,14 @@ export default function MeditationTimer() {
           value={duration}
           onValueChange={setDuration}
         />
-        <Text style={styles.durationText}>{duration} 分鐘</Text>
+        <Text style={styles.durationText}>{duration} minutes</Text>
       </View>
 
-      <Text style={styles.label}>背景音樂</Text>
+      <Text style={styles.label}>Background Music</Text>
       <ScrollView horizontal style={{ marginVertical: 12 }}>
         <View style={styles.soundItem}>
-          <Image source={require('../../assets/forest.jpeg')} style={styles.soundImage} />
-          <Text>森林</Text>
+          <Image source={require('@/assets/forest.jpeg')} style={styles.soundImage} />
+          <Text>Forest</Text>
         </View>
         {/* 你可以放更多背景圖 */}
       </ScrollView>
@@ -70,7 +70,7 @@ export default function MeditationTimer() {
         onPress={isPlaying ? stopMeditation : startMeditation}
       >
         <Text style={styles.startButtonText}>
-          {isPlaying ? '結束冥想' : '開始冥想'}
+          {isPlaying ? 'End Meditation' : 'Start Meditation'}
         </Text>
       </TouchableOpacity>
     </View>

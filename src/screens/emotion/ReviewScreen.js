@@ -1,19 +1,26 @@
 import { View, Text, ScrollView, Button } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { Emotion_Categories } from './SelectEmojiScreen';
-import { recommendBestActivity } from '@/screens/recommendation';
 import { SafeAreaView } from 'react-native-safe-area-context';
+
+import { Emotion_Categories } from '@/screens/emotion/SelectEmojiScreen';
+import { getRecommendation } from '@/lib/services/recommendationService';
 
 export default function ReviewScreen({ route }) {
   const navigation = useNavigation();
   const selectedEmotions = route.params.selectedEmotions;
   const texts = selectedEmotions.map(e => e.emotion);
 
-  const handleRecommend = () => {
-    // 呼叫你的加權＋隨機平手邏輯
-    const activityId = recommendBestActivity(texts);
-    // 跳到下一頁，帶入推薦到的 activityId
-    navigation.navigate('RecommendResult', { activityId });
+  const handleRecommendation = async () => {
+    try {
+      // Call weighted + random tie-breaking logic
+      const recommendedActivity = await getRecommendation(selectedEmotions);
+      // Navigate to next page with recommended activityId
+      navigation.navigate('RecommendResultScreen', { 
+        activityId: recommendedActivity 
+      });
+    } catch (error) {
+      console.error('Error getting recommendation:', error);
+    }
   };
   
   return (
@@ -37,11 +44,10 @@ export default function ReviewScreen({ route }) {
         <Button title="返回修改" onPress={() => navigation.goBack()} />
       </View>
 
-      {/* 新增下一步按鈕 */}
       <View>
         <Button
           title="下一步：推薦活動"
-          onPress={handleRecommend}
+          onPress={handleRecommendation}
         />
       </View>
     </SafeAreaView>

@@ -7,38 +7,42 @@ import { getUserProfile } from '@/lib/api/profileRequest';
 
 export default function UserProfileScreen() {
   const [profile, setProfile] = useState(null);
+  const [loading, setLoading] = useState(true);
   const navigation = useNavigation(); 
 
   useEffect(() => {
-    const loadProfile = async () => {
+    const loadUserProfile = async () => {
       try {
-        const cached = await AsyncStorage.getItem('user_profile');
-        if (cached) {
-          setProfile(JSON.parse(cached));
-          }
-        } catch (e) {
-          console.error('讀取快取失敗', e);
+        // Load from local cache first
+        const cachedProfile = await AsyncStorage.getItem('userProfile');
+        if (cachedProfile) {
+          setProfile(JSON.parse(cachedProfile));
         }
-
-        // 再從後端拿取最新資料
+        
+        // Then fetch latest data from backend
         const remote = await getUserProfile();
         if (remote) {
           setProfile(remote);
-          // 更新本地快取
+          // Update local cache
           try {
-            await AsyncStorage.setItem('user_profile', JSON.stringify(remote));
+            await AsyncStorage.setItem('userProfile', JSON.stringify(remote));
           } catch (e) {
             console.error('快取更新失敗', e);
           }
         }
+      } catch (error) {
+        console.error('Error loading user profile:', error);
+      } finally {
         setLoading(false);
-      };
-      loadProfile();
-    }, []);
+      }
+    };
+    
+    loadUserProfile();
+  }, []);
 
 
   const handleLogout = async () => {
-    await AsyncStorage.multiRemove(['token', 'user_profile']);
+    await AsyncStorage.multiRemove(['token', 'userProfile']);
     navigation.reset({
       index: 0,
       routes: [{ name: 'Auth' }],
@@ -46,10 +50,10 @@ export default function UserProfileScreen() {
   };
 
 
-  if (!profile) {
+  if (loading || !profile) {
     return (
       <View style={styles.container}>
-        <Text style={styles.text}>載入中...</Text>
+        <Text style={styles.loadingText}>載入中...</Text>
       </View>
     );
   }
@@ -95,7 +99,7 @@ const styles = StyleSheet.create({
     color: "#666",
     textAlign: "center",
   },
-  text: {
+  loadingText: {
     fontSize: 20,
     color: '#555',
   },

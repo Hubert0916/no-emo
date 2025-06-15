@@ -3,13 +3,18 @@ import { Text, View, Image, TouchableOpacity, FlatList, Button } from 'react-nat
 import { useNavigation } from '@react-navigation/native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+// Emotion category data constants
 export const Emotion_Categories = {
   Positive: {
     emoji: "😆",
     category: "Positive",
     label: "Positive",
-    image: require('../assets/emoji_1.png'),
+    image: require('@/assets/emoji_1.png'),
     emotions: [
+      { text: "Happy", emoji: "😊" },
+      { text: "Loved", emoji: "🥰" },
+      { text: "Joyful", emoji: "😆" },
+      { text: "Grateful", emoji: "🤗" },
       { text: "感激的", emoji: "🙏" },
       { text: "滿足的", emoji: "😊" },
       { text: "有創意的", emoji: "🎨" },
@@ -33,7 +38,7 @@ export const Emotion_Categories = {
     emoji: "😌",
     category: "Good",
     label: "Good",
-    image: require('../assets/emoji_2.png'),
+    image: require('@/assets/emoji_2.png'),
     emotions: [
       { text: "自在的", emoji: "😌" },
       { text: "頭腦清晰的", emoji: "🧠" },
@@ -49,12 +54,13 @@ export const Emotion_Categories = {
       { text: "有安全感的", emoji: "🛡️" },
       { text: "寧靜的", emoji: "🍃" },
       { text: "無憂無慮的", emoji: "🎈" }
-    ],},
+    ],
+  },
   Neutral: {
     emoji: "😶",
     category: "Neutral",
     label: "Neutral",
-    image: require('../assets/emoji_3.png'),
+    image: require('@/assets/emoji_3.png'),
     emotions: [
       { text: "害怕的", emoji: "😨" },
       { text: "焦慮的", emoji: "😟" },
@@ -86,7 +92,7 @@ export const Emotion_Categories = {
     emoji: "😢",
     category: "Negative",
     label: "Negative",
-    image: require('../assets/emoji_4.png'),
+    image: require('@/assets/emoji_4.png'),
     emotions: [
       { text: "焦躁不安的", emoji: "😖" },
       { text: "憂慮的", emoji: "😔" },
@@ -111,7 +117,7 @@ export const Emotion_Categories = {
     emoji: "😭",
     category: "Sad",
     label: "Saaad",
-    image: require('../assets/emoji_5.png'),
+    image: require('@/assets/emoji_5.png'),
     emotions: [
       { text: "生氣的", emoji: "😡" },
       { text: "傲慢的", emoji: "😤" },
@@ -155,13 +161,15 @@ export default function SelectEmoji() {
       setSelectedEmotions(selectedEmotions.filter((e) => e.emotion !== emotion));
     } else {
       if (selectedEmotions.length < 5) {
-        setSelectedEmotions([...selectedEmotions, { emotion, emoji, category: selectedCategory }]);
+        setSelectedEmotions([
+          ...selectedEmotions, 
+          { emotion, emoji, category: selectedCategory }
+        ]);
       } else {
         alert("最多只能選五個ㄡ！");
       }
     }
   };
-  
 
   const goToViewScreen = () => {
     if (selectedEmotions.length < 1) {
@@ -174,10 +182,7 @@ export default function SelectEmoji() {
   const currentCategory = Emotion_Categories[selectedCategory];
   const currentEmotions = currentCategory.emotions || [];
 
-  return (
-    <SafeAreaView style={{ flex: 1, padding: 16, backgroundColor: '#fff' }}>
-<View style={{ flexDirection: 'row', justifyContent: 'center', marginBottom: 16 }}>
-  {[...Array(5)].map((_, index) => {
+  const renderEmotionSlot = (index) => {
     const emotion = selectedEmotions[index];
     return (
       <View
@@ -197,44 +202,43 @@ export default function SelectEmoji() {
         <Text style={{ fontSize: 20 }}>{emotion?.emoji || ''}</Text>
       </View>
     );
-  })}
-</View>
+  };
 
-      <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 10 }}>
-        {Object.keys(Emotion_Categories).map((categoryKey) => {
-          const categoryData = Emotion_Categories[categoryKey];
-          return (
-            <TouchableOpacity
-              key={categoryKey}
-              style={[
-                {
-                  flex: 1,
-                  marginHorizontal: 4,
-                  paddingVertical: 8,
-                  backgroundColor: '#ccc',
-                  borderRadius: 4,
-                  alignItems: 'center'
-                },
-                categoryKey === selectedCategory && { backgroundColor: '#ffa' }
-              ]}
-              onPress={() => setSelectedCategory(categoryKey)}
-            >
-              <Image source={categoryData.image} style={{ width: 40, height: 40 }} resizeMode="contain" />
-              <Text style={{ fontSize: 12, marginTop: 4 }}>{categoryData.label}</Text>
-            </TouchableOpacity>
-          );
-        })}
-      </View>
+  const renderCategoryButton = (categoryKey) => {
+    const categoryData = Emotion_Categories[categoryKey];
+    const isSelected = categoryKey === selectedCategory;
+    
+    return (
+      <TouchableOpacity
+        key={categoryKey}
+        style={[
+          {
+            flex: 1,
+            marginHorizontal: 4,
+            paddingVertical: 8,
+            backgroundColor: '#ccc',
+            borderRadius: 4,
+            alignItems: 'center'
+          },
+          isSelected && { backgroundColor: '#ffa' }
+        ]}
+        onPress={() => setSelectedCategory(categoryKey)}
+      >
+        <Image 
+          source={categoryData.image} 
+          style={{ width: 40, height: 40 }} 
+          resizeMode="contain" 
+        />
+        <Text style={{ fontSize: 12, marginTop: 4 }}>
+          {categoryData.label}
+        </Text>
+      </TouchableOpacity>
+    );
+  };
 
-      <FlatList
-  data={currentEmotions}
-  keyExtractor={(item) => item.text}
-  numColumns={3}
-  columnWrapperStyle={{ justifyContent: 'space-between' }}
-  contentContainerStyle={{ paddingBottom: 40 }}
-  style={{ marginTop: 10 }}
-  renderItem={({ item }) => {
+  const renderEmotionItem = ({ item }) => {
     const isSelected = selectedEmotions.some((e) => e.emotion === item.text);
+    
     return (
       <TouchableOpacity
         style={[
@@ -252,15 +256,52 @@ export default function SelectEmoji() {
         ]}
         onPress={() => toggleEmotion(item.text, item.emoji)}
       >
-        <Text style={{ fontSize: 14 }}>{item.text}</Text>
+        <Text style={{ fontSize: 24, marginBottom: 4 }}>
+          {item.emoji}
+        </Text>
+        <Text 
+          style={{ 
+            fontSize: 14, 
+            color: isSelected ? '#333' : '#666',
+            textAlign: 'center' 
+          }}
+        >
+          {item.text}
+        </Text>
       </TouchableOpacity>
     );
-  }}
-/>
+  };
 
+  return (
+    <SafeAreaView style={{ flex: 1, padding: 16, backgroundColor: '#fff' }}>
+      {/* 已選情緒顯示區 */}
+      <View style={{ flexDirection: 'row', justifyContent: 'center', marginBottom: 16 }}>
+        {[...Array(5)].map((_, index) => renderEmotionSlot(index))}
+      </View>
 
+      {/* 類別選擇按鈕 */}
+      <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 10 }}>
+        {Object.keys(Emotion_Categories).map(renderCategoryButton)}
+      </View>
+
+      {/* 情緒選項列表 */}
+      <FlatList
+        data={currentEmotions}
+        keyExtractor={(item) => item.text}
+        numColumns={3}
+        columnWrapperStyle={{ justifyContent: 'space-between' }}
+        contentContainerStyle={{ paddingBottom: 40 }}
+        style={{ marginTop: 10 }}
+        renderItem={renderEmotionItem}
+      />
+
+      {/* 操作按鈕 */}
       <View style={{ marginTop: 20 }}>
-        <Button title="下一步" onPress={goToViewScreen} />
+        <Button
+          title={`下一步 (已選 ${selectedEmotions.length}/5)`}
+          onPress={goToViewScreen}
+          disabled={selectedEmotions.length === 0}
+        />
       </View>
     </SafeAreaView>
   );

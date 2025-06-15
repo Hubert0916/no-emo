@@ -1,32 +1,32 @@
 import { NavigationContainer } from "@react-navigation/native";
-import { createStackNavigator } from "@react-navigation/stack";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import ActiveMenu from "./components/timer/ActiveMenu";
-import MeditationTimer from "./components/timer/MeditationTimer";
-import WoodFish from "./components/timer/WoodFish";
-import MeditationCountdown from "./components/timer/MeditationCountdown";
-import HomeScreen from "./screens//HomeScreen";
-import SelectEmoji from "./screens/SelectEmojiScreen";
-import ReviewScreen from "./screens//ReviewScreen";
-import ProfileScreen from "./screens/ProfileScreen";
-import DiaryScreen from "./screens/DiaryScreen";
-import UserProfileScreen from "./screens/UserProfileScreen";
-import ProfileSetupScreen from "./screens/ProfileSetupScreen";
-import RecommendResult from "@/screens/RecommendResult";
-import { AuthProvider } from "./contexts/AuthContext";
-import Theme from './Theme';
+import ActiveMenu from "@/components/relax/ActiveMenu";
+import MeditationTimer from "@/components/relax/MeditationTimer";
+import WoodFish from "@/components/relax/WoodFish";
+import MeditationCountdown from "@/components/relax/MeditationCountdown";
+import HomeScreen from "@/screens/home/HomeScreen";
+import SelectEmojiScreen from "@/screens/emotion/SelectEmojiScreen";
+import ReviewScreen from "@/screens/emotion/ReviewScreen";
+import DiaryScreen from "@/screens/diary/DiaryScreen";
+import AuthScreen from "@/screens/profile/AuthScreen";
+import ProfileSetupScreen from "@/screens/profile/ProfileSetupScreen";
+import UserProfileScreen from "@/screens/profile/UserProfileScreen";
+import RecommendResultScreen from "@/screens/emotion/RecommendResultScreen";
+import { AuthProvider } from "@/contexts/AuthContext";
+import Theme from '@/lib/theme';
 
-const Stack = createStackNavigator();
+const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
 function HomeStack() {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen name="Home" component={HomeScreen} />
-      <Stack.Screen name="SelectEmoji" component={SelectEmoji} />
+      <Stack.Screen name="SelectEmoji" component={SelectEmojiScreen} />
       <Stack.Screen name="Review" component={ReviewScreen} />
-      <Stack.Screen name="RecommendResult" component={RecommendResult} />
+      <Stack.Screen name="RecommendResult" component={RecommendResultScreen} />
     </Stack.Navigator>
   );
 }
@@ -58,10 +58,18 @@ function RelaxStack() {
   );
 }
 
+function DiaryStack() {
+  return (
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Screen name="DiaryMain" component={DiaryScreen} />
+    </Stack.Navigator>
+  );
+}
+
 function ProfileStack() {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="Auth" component={ProfileScreen} />
+      <Stack.Screen name="Auth" component={AuthScreen} />
       <Stack.Screen name="ProfileSetup" component={ProfileSetupScreen} />
       <Stack.Screen name="UserProfile" component={UserProfileScreen} />
     </Stack.Navigator>
@@ -95,22 +103,20 @@ function MyTab() {
           }
           return <Ionicons name={iconName} size={size} color={color} />;
         },
-        tabBarActiveTintColor: Theme.Colors.primary, // 使用主題色
-        tabBarInactiveTintColor: Theme.Colors.placeholder, // 使用主題色
+        tabBarActiveTintColor: Theme.Colors.primary,
+        tabBarInactiveTintColor: Theme.Colors.placeholder,
         tabBarStyle: {
-          backgroundColor: Theme.Colors.surface, // Tab Bar 背景色
-          borderTopColor: Theme.Colors.border, // Tab Bar 頂部邊框顏色
-          // 你也可以在這裡設定其他 tabBarStyle 屬性，如 height
+          backgroundColor: Theme.Colors.surface,
+          borderTopColor: Theme.Colors.border,
         },
         tabBarLabelStyle: {
-          fontSize: Theme.Fonts.sizes.xs, // Tab Bar 文字大小
-          fontWeight: Theme.Fonts.weights.medium,
+          fontSize: Theme.Fonts.sizes.xs,
         },
       })}
     >
       <Tab.Screen name="Check-In" component={HomeStack} />
       <Tab.Screen name="Relax" component={RelaxStack} />
-      <Tab.Screen name="Diary" component={DiaryScreen} />
+      <Tab.Screen name="Diary" component={DiaryStack} />
       <Tab.Screen name="Profile" component={ProfileStack} />
     </Tab.Navigator>
   );

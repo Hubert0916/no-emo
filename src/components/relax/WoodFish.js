@@ -11,7 +11,7 @@ export default function WoodFish() {
 
     Animated.sequence([
       Animated.timing(stickAnim, {
-        toValue: { x: -60, y: 40 }, // 👈 動畫方向調整
+        toValue: { x: -60, y: 40 }, // Animation direction adjustment
         duration: 100,
         useNativeDriver: true,
       }),
@@ -30,18 +30,18 @@ export default function WoodFish() {
       <TouchableWithoutFeedback onPress={handlePress}>
         <View style={styles.imageBox}>
           {/* 木魚圖 */}
-          <Image source={require('../../assets/woodfish.png')} style={styles.woodfish} />
+          <Image source={require('@/assets/woodfish.png')} style={styles.woodfish} />
 
           {/* 棒子動畫圖 */}
           <Animated.Image
-            source={require('../../assets/stick.png')}
+            source={require('@/assets/stick.png')}
             style={[
               styles.stick,
               {
                 transform: [
                   { translateX: stickAnim.x },
                   { translateY: stickAnim.y },
-                  { rotate: '30deg' }, // 角度調整
+                  { rotate: '30deg' }, // Angle adjustment
                 ],
               },
             ]}
@@ -72,7 +72,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     width: 80,
     height: 80,
-    top: -10, // 👈 從右上角出發
+    top: -10, // Start from top right corner
     right: -10,
     resizeMode: 'contain',
   },
