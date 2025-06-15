@@ -36,7 +36,7 @@ export default function DayCell({ day, onPress, mood }) {
         {day.day}
       </Text>
       <View style={styles.emojiSlot}>
-        <Text style={styles.emoji}>{mood?.emoji || ""}</Text>
+        <Text style={styles.emoji}>{mood?.mood || ""}</Text>
       </View>
     </TouchableOpacity>
   );
