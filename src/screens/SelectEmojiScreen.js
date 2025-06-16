@@ -2,6 +2,9 @@ import { useState } from 'react';
 import { Text, View, Image, TouchableOpacity, FlatList, Button } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import Theme from '../Theme';
+import { StyleSheet } from 'react-native';
+
 
 export const Emotion_Categories = {
   Positive: {
@@ -161,7 +164,94 @@ export default function SelectEmoji() {
       }
     }
   };
-  
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: Theme.Spacing.lg,
+    backgroundColor: Theme.Colors.background,
+  },
+  selectedEmotionsRow: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    marginBottom: Theme.Spacing.md,
+  },
+  emotionBubble: {
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    borderWidth: 1,
+    borderColor: Theme.Colors.border,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginHorizontal: 4,
+    backgroundColor: Theme.Colors.surface,
+  },
+  emotionBubbleSelected: {
+    backgroundColor: '#ffd',
+  },
+  categoryRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: Theme.Spacing.sm,
+  },
+  categoryButton: {
+    flex: 1,
+    marginHorizontal: 4,
+    paddingVertical: 8,
+    backgroundColor: Theme.Colors.neutralBackground,
+    borderRadius: Theme.BorderRadius.sm,
+    alignItems: 'center',
+  },
+  categoryButtonSelected: {
+    backgroundColor: '#ffa',
+  },
+  categoryImage: {
+    width: 40,
+    height: 40,
+  },
+  categoryLabel: {
+    fontSize: Theme.Fonts.sizes.xs,
+    marginTop: 4,
+    color: Theme.Colors.textPrimary,
+  },
+  emotionColumn: {
+    justifyContent: 'space-between',
+  },
+  emotionItem: {
+    flex: 1,
+    margin: 6,
+    paddingVertical: 10,
+    paddingHorizontal: 12,
+    backgroundColor: '#f2f2f2',
+    borderRadius: Theme.BorderRadius.circle / 5,
+    borderWidth: 1,
+    borderColor: Theme.Colors.border,
+    alignItems: 'center',
+  },
+  emotionItemSelected: {
+    backgroundColor: '#ffefc5',
+    borderColor: '#f0a500',
+  },
+  emotionText: {
+    fontSize: Theme.Fonts.sizes.sm,
+    color: Theme.Colors.textPrimary,
+  },
+  nextButton: {
+  backgroundColor: Theme.Colors.primary,
+  paddingVertical: Theme.Spacing.md,
+  borderRadius: Theme.BorderRadius.md,
+  alignItems: 'center',
+  marginTop: Theme.Spacing.xl,
+  },
+
+  nextButtonText: {
+    color: '#fff',
+    fontSize: Theme.Fonts.sizes.md,
+    fontWeight: Theme.Fonts.weights.bold,
+  },
+
+});
+
 
   const goToViewScreen = () => {
     if (selectedEmotions.length < 1) {
@@ -171,97 +261,83 @@ export default function SelectEmoji() {
     navigation.navigate('Review', { selectedEmotions });
   };
 
+
   const currentCategory = Emotion_Categories[selectedCategory];
   const currentEmotions = currentCategory.emotions || [];
 
-  return (
-    <SafeAreaView style={{ flex: 1, padding: 16, backgroundColor: '#fff' }}>
-<View style={{ flexDirection: 'row', justifyContent: 'center', marginBottom: 16 }}>
-  {[...Array(5)].map((_, index) => {
-    const emotion = selectedEmotions[index];
-    return (
-      <View
-        key={index}
-        style={{
-          width: 36,
-          height: 36,
-          borderRadius: 18,
-          borderWidth: 1,
-          alignItems: 'center',
-          justifyContent: 'center',
-          borderColor: '#aaa',
-          marginHorizontal: 4,
-          backgroundColor: emotion ? '#ffd' : '#fff',
-        }}
-      >
-        <Text style={{ fontSize: 20 }}>{emotion?.emoji || ''}</Text>
-      </View>
-    );
-  })}
-</View>
 
-      <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginBottom: 10 }}>
+  return (
+    <SafeAreaView style={styles.container}>
+      <View style={styles.selectedEmotionsRow}>
+        {[...Array(5)].map((_, index) => {
+          const emotion = selectedEmotions[index];
+          return (
+            <View
+              key={index}
+              style={[
+                styles.emotionBubble,
+                emotion && styles.emotionBubbleSelected,
+              ]}
+            >
+              <Text style={styles.emojiText}>{emotion?.emoji || ''}</Text>
+            </View>
+          );
+        })}
+      </View>
+
+      <View style={styles.categoryRow}>
         {Object.keys(Emotion_Categories).map((categoryKey) => {
           const categoryData = Emotion_Categories[categoryKey];
+          const isSelected = categoryKey === selectedCategory;
           return (
             <TouchableOpacity
               key={categoryKey}
               style={[
-                {
-                  flex: 1,
-                  marginHorizontal: 4,
-                  paddingVertical: 8,
-                  backgroundColor: '#ccc',
-                  borderRadius: 4,
-                  alignItems: 'center'
-                },
-                categoryKey === selectedCategory && { backgroundColor: '#ffa' }
+                styles.categoryButton,
+                isSelected && styles.categoryButtonSelected,
               ]}
               onPress={() => setSelectedCategory(categoryKey)}
             >
-              <Image source={categoryData.image} style={{ width: 40, height: 40 }} resizeMode="contain" />
-              <Text style={{ fontSize: 12, marginTop: 4 }}>{categoryData.label}</Text>
+              <Image
+                source={categoryData.image}
+                style={styles.categoryImage}
+                resizeMode="contain"
+              />
+              <Text style={styles.categoryLabel}>{categoryData.label}</Text>
             </TouchableOpacity>
           );
         })}
       </View>
 
+
       <FlatList
-  data={currentEmotions}
-  keyExtractor={(item) => item.text}
-  numColumns={3}
-  columnWrapperStyle={{ justifyContent: 'space-between' }}
-  contentContainerStyle={{ paddingBottom: 40 }}
-  style={{ marginTop: 10 }}
-  renderItem={({ item }) => {
-    const isSelected = selectedEmotions.some((e) => e.emotion === item.text);
-    return (
-      <TouchableOpacity
-        style={[
-          {
-            flex: 1,
-            margin: 6,
-            paddingVertical: 10,
-            paddingHorizontal: 12,
-            backgroundColor: isSelected ? '#ffefc5' : '#f2f2f2',
-            borderRadius: 20,
-            borderWidth: 1,
-            borderColor: isSelected ? '#f0a500' : '#ccc',
-            alignItems: 'center'
-          }
-        ]}
-        onPress={() => toggleEmotion(item.text, item.emoji)}
-      >
-        <Text style={{ fontSize: 14 }}>{item.text}</Text>
-      </TouchableOpacity>
-    );
-  }}
-/>
+        data={currentEmotions}
+        keyExtractor={(item) => item.text}
+        numColumns={3}
+        columnWrapperStyle={styles.emotionColumn}
+        contentContainerStyle={{ paddingBottom: 40 }}
+        style={{ marginTop: 10 }}
+        renderItem={({ item }) => {
+          const isSelected = selectedEmotions.some(
+            (e) => e.emotion === item.text
+          );
+          return (
+            <TouchableOpacity
+              style={[
+                styles.emotionItem,
+                isSelected && styles.emotionItemSelected,
+              ]}
+              onPress={() => toggleEmotion(item.text, item.emoji)}
+            >
+              <Text style={styles.emotionText}>{item.text}</Text>
+            </TouchableOpacity>
+          );
+        }}
+      />
 
-
-      <View style={{ marginTop: 20 }}>
-        <Button title="下一步" onPress={goToViewScreen} />
-      </View>
+    <TouchableOpacity style={styles.nextButton} onPress={goToViewScreen}>
+      <Text style={styles.nextButtonText}>下一步</Text>
+    </TouchableOpacity>
     </SafeAreaView>
   );
 }

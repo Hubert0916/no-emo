@@ -1,5 +1,6 @@
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import Theme from '../../Theme';
 
 
 export default function MenuPage() {
@@ -27,15 +28,37 @@ export default function MenuPage() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, justifyContent: 'center', alignItems: 'center', padding: 24 },
-  title: { fontSize: 24, fontWeight: 'bold', marginBottom: 32 },
+  container: {
+    flex: 1,
+    backgroundColor: Theme.Colors.neutralBackground, // ⬅️ 淺灰背景
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: Theme.Spacing.xl,
+  },
+  title: {
+    fontSize: Theme.Fonts.sizes.xl,
+    fontWeight: Theme.Fonts.weights.bold,
+    color: Theme.Colors.textPrimary,
+    marginBottom: Theme.Spacing.xl,
+  },
   option: {
-    backgroundColor: '#eee',
-    padding: 20,
-    borderRadius: 16,
-    marginVertical: 10,
+    backgroundColor: Theme.Colors.surface, // ⬅️ 白色按鈕
+    paddingVertical: Theme.Spacing.lg,
+    paddingHorizontal: Theme.Spacing.xl,
+    borderRadius: Theme.BorderRadius.lg,
+    marginVertical: Theme.Spacing.sm,
     width: '100%',
     alignItems: 'center',
+
+    // 陰影效果
+    shadowColor: '#000',
+    shadowOpacity: 0.05,
+    shadowRadius: 4,
+    elevation: 2,
   },
-  optionText: { fontSize: 20 },
+  optionText: {
+    fontSize: Theme.Fonts.sizes.lg,
+    color: Theme.Colors.textPrimary,
+    fontWeight: Theme.Fonts.weights.medium,
+  },
 });

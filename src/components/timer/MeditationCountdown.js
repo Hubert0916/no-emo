@@ -3,16 +3,18 @@ import { View, Text, StyleSheet } from 'react-native';
 import { Audio } from 'expo-av';
 import bellSound from '../../assets/Meditation Bell Sound 1.mp3';
 import backgroundMusic from '../../assets/Meditation Sound April 8 2025.mp3';
+import Theme from '../../Theme';
 
 export default function MeditationCountdown({ route, navigation }) {
   const { duration } = route.params;
   const [secondsLeft, setSecondsLeft] = useState(duration * 60);
-  const bgmSoundRef = useRef(null); // ✅ 使用 useRef 儲存音樂實例
+  const chimeRef = useRef(null);
+  const bgmSoundRef = useRef(null); 
 
   useEffect(() => {
-    // 初始化：播放鈴聲 + 音樂
     const initSound = async () => {
       const { sound: chime } = await Audio.Sound.createAsync(bellSound);
+      chimeRef.current = chime;
       await chime.playAsync();
 
       const { sound: bgm } = await Audio.Sound.createAsync(backgroundMusic, {
@@ -41,6 +43,10 @@ export default function MeditationCountdown({ route, navigation }) {
       if (bgmSoundRef.current) {
         bgmSoundRef.current.stopAsync();
         bgmSoundRef.current.unloadAsync();
+      }
+      if (chimeRef.current) {
+      chimeRef.current.stopAsync();
+      chimeRef.current.unloadAsync();
       }
     };
   }, []);

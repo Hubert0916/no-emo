@@ -26,7 +26,7 @@ export function recommendBestActivity(selectedEmotions = [], userPreferredActivi
     const actId = categoryOneToOneMap[catEntry.category];
     if (actId) {
       emotionScores[actId] = (emotionScores[actId] || 0) + 1;
-  }
+    }
 });
 
   const emotionBasedEntries = Object.entries(emotionScores);

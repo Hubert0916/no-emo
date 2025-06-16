@@ -1,13 +1,13 @@
 import { useState, useRef, useEffect } from 'react';
 import Slider from '@react-native-community/slider';
 import { useNavigation } from '@react-navigation/native';
-
 import {
     View, Text, StyleSheet, TouchableOpacity, ScrollView, Image
   } from 'react-native';
 import { Audio } from 'expo-audio';
 import bellSound from '../../assets/Meditation Bell Sound 1.mp3';
 import backgroundMusic from '../../assets/Meditation Sound April 8 2025.mp3'; 
+import Theme from '../../Theme'; // 假設你有一個主題檔案
 
 export default function MeditationTimer() {
     const navigation = useNavigation();
@@ -93,20 +93,16 @@ const styles = StyleSheet.create({
     borderRadius: 32,
     marginBottom: 6,
   },
-
   startButton: {
     marginTop: 40,
-    backgroundColor: '#2a82ff',
+    backgroundColor: Theme.Colors.primary,
     paddingVertical: 16,
-    borderRadius: 12,
+    borderRadius: Theme.BorderRadius.md,
     alignItems: 'center',
   },
-  stopButton: {
-    backgroundColor: '#d33',
-  },
   startButtonText: {
-    color: 'white',
-    fontSize: 18,
-    fontWeight: 'bold',
+    color: Theme.Colors.surface,
+    fontSize: Theme.Fonts.sizes.md,
+    fontWeight: Theme.Fonts.weights.bold,
   },
 });

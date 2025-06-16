@@ -1,8 +1,12 @@
-import { View, Text, ScrollView, Button } from 'react-native';
+import { View, Text, ScrollView, TouchableOpacity, Button } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { Emotion_Categories } from './SelectEmojiScreen';
 import { recommendBestActivity } from '@/screens/recommendation';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import Theme from '../Theme';
+import { StyleSheet } from 'react-native';
+
+
 
 export default function ReviewScreen({ route }) {
   const navigation = useNavigation();
@@ -17,33 +21,66 @@ export default function ReviewScreen({ route }) {
   };
   
   return (
-    <SafeAreaView style={{ flex: 1, padding: 20, backgroundColor: '#fff' }}>
-      <Text style={{ fontSize: 20, fontWeight: 'bold', marginBottom: 10 }}>
+    <SafeAreaView style={styles.container}>
+      <Text style={styles.title}>
         你選擇的情緒（{selectedEmotions.length}/5）：
       </Text>
 
-      <ScrollView style={{ marginBottom: 20 }}>
+      <ScrollView style={styles.scroll}>
         {selectedEmotions.map((emotion, index) => (
-          <Text
-            key={`${emotion.emotion}-${index}`}
-            style={{ fontSize: 18, marginBottom: 8 }}
-          >
+          <Text key={`${emotion.emotion}-${index}`} style={styles.emotionText}>
             {Emotion_Categories[emotion.category].emoji} {emotion.emotion}
           </Text>
         ))}
       </ScrollView>
 
-      <View style={{ marginBottom: 10 }}>
-        <Button title="返回修改" onPress={() => navigation.goBack()} />
-      </View>
+      <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
+        <Text style={styles.buttonText}>返回修改</Text>
+      </TouchableOpacity>
 
-      {/* 新增下一步按鈕 */}
-      <View>
-        <Button
-          title="下一步：推薦活動"
-          onPress={handleRecommend}
-        />
-      </View>
+      <TouchableOpacity style={styles.nextButton} onPress={handleRecommend}>
+        <Text style={styles.buttonText}>下一步：推薦活動</Text>
+      </TouchableOpacity>
     </SafeAreaView>
   );
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: Theme.Spacing.xl,
+    backgroundColor: Theme.Colors.background,
+  },
+  title: {
+    fontSize: Theme.Fonts.sizes.lg,
+    fontWeight: Theme.Fonts.weights.bold,
+    marginBottom: Theme.Spacing.md,
+    color: Theme.Colors.textPrimary,
+  },
+  scroll: {
+    marginBottom: Theme.Spacing.md,
+  },
+  emotionText: {
+    fontSize: Theme.Fonts.sizes.md,
+    marginBottom: Theme.Spacing.sm,
+    color: Theme.Colors.textPrimary,
+  },
+  backButton: {
+    backgroundColor: Theme.Colors.border,
+    paddingVertical: Theme.Spacing.md,
+    borderRadius: Theme.BorderRadius.md,
+    alignItems: 'center',
+    marginBottom: Theme.Spacing.sm,
+  },
+  nextButton: {
+    backgroundColor: Theme.Colors.primary,
+    paddingVertical: Theme.Spacing.md,
+    borderRadius: Theme.BorderRadius.md,
+    alignItems: 'center',
+  },
+  buttonText: {
+    color: '#fff',
+    fontSize: Theme.Fonts.sizes.md,
+    fontWeight: Theme.Fonts.weights.bold,
+  },
+});

@@ -1,6 +1,6 @@
-// RecommendResult.js
 import { View, Text, Image, StyleSheet, TouchableOpacity, SafeAreaView } from 'react-native';
 import { useRoute, useNavigation } from '@react-navigation/native';
+import Theme from '../Theme';
 
 
 // 1. 活動資料對照表：ID → 詳細資訊
@@ -28,7 +28,6 @@ const activityData = {
   meditation: {
     title: '冥想',
     description: '靜坐 5 分鐘，做深呼吸放鬆身心。',
-    // icon: require('../assets/meditate.png'),
   },
 };
 
@@ -37,7 +36,6 @@ export default function RecommendResult() {
   const navigation = useNavigation();
   const { activityId } = route.params || {};
 
-  // 2. 拿到這次要展示的活動資訊
   const info = activityData[activityId] || {};
 
   return (
@@ -52,12 +50,12 @@ export default function RecommendResult() {
         </View>
       </View>
 
-      <TouchableOpacity
-        style={styles.button}
-        onPress={() => navigation.popToTop()}
-      >
-        <Text style={styles.buttonText}>重新選擇情緒</Text>
-      </TouchableOpacity>
+    <TouchableOpacity
+      style={styles.button}
+      onPress={() => navigation.popToTop()}
+    >
+      <Text style={styles.buttonText}>重新選擇情緒</Text>
+    </TouchableOpacity>
     </SafeAreaView>
   );
 }
@@ -65,54 +63,55 @@ export default function RecommendResult() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 24,
-    backgroundColor: '#FFFFFF',
+    padding: Theme.Spacing.xxl,
+    backgroundColor: Theme.Colors.background,
     justifyContent: 'center',
   },
   header: {
-    fontSize: 28,
-    fontWeight: '700',
+    fontSize: Theme.Fonts.sizes.xxl,
+    fontWeight: Theme.Fonts.weights.bold,
     textAlign: 'center',
-    marginBottom: 32,
+    marginBottom: Theme.Spacing.xl,
+    color: Theme.Colors.textPrimary,
   },
   card: {
     flexDirection: 'row',
-    backgroundColor: '#F9F9F9',
-    borderRadius: 12,
-    padding: 16,
+    backgroundColor: Theme.ActivityStyle.cardBackground,
+    borderRadius: Theme.BorderRadius.lg,
+    padding: Theme.Spacing.lg,
     alignItems: 'center',
-    elevation: 2, // Android shadow
-    shadowColor: '#000', // iOS shadow
-    shadowOpacity: 0.1,
-    shadowRadius: 8,
-    marginBottom: 40,
+    ...Theme.ActivityStyle.cardShadow,
+    marginBottom: Theme.Spacing.xxl,
   },
   icon: {
     width: 64,
     height: 64,
-    marginRight: 16,
+    marginRight: Theme.Spacing.md,
   },
   textBox: {
     flex: 1,
   },
   title: {
-    fontSize: 22,
-    fontWeight: '600',
-    marginBottom: 6,
+    fontSize: Theme.Fonts.sizes.xl,
+    fontWeight: Theme.Fonts.weights.semibold,
+    marginBottom: Theme.Spacing.xs,
+    color: Theme.Colors.textPrimary,
   },
   desc: {
-    fontSize: 16,
-    color: '#666',
+    fontSize: Theme.Fonts.sizes.md,
+    color: Theme.Colors.textSecondary,
   },
   button: {
-    backgroundColor: '#4A90E2',
-    paddingVertical: 14,
-    borderRadius: 8,
+    backgroundColor: Theme.Colors.primary,
+    paddingVertical: Theme.Spacing.md,
+    paddingHorizontal: Theme.Spacing.xl,
+    borderRadius: Theme.BorderRadius.md,
     alignItems: 'center',
+    marginTop: Theme.Spacing.md,
   },
   buttonText: {
-    color: '#FFF',
-    fontSize: 18,
-    fontWeight: '500',
+    color: '#fff',
+    fontSize: Theme.Fonts.sizes.md,
+    fontWeight: Theme.Fonts.weights.medium,
   },
 });

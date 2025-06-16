@@ -5,6 +5,8 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import Feather from "@react-native-vector-icons/feather";
 import { useNavigation } from "@react-navigation/native";
 import { useAuth } from "@/contexts/AuthContext";
+import { StyleSheet } from "react-native";
+import Theme from "../Theme";
 
 export default function AuthScreen() {
   const [isRegister, setIsRegister] = useState(false);
@@ -80,13 +82,13 @@ export default function AuthScreen() {
         flex: 1,
         justifyContent: "center",
         alignItems: "center",
-        backgroundColor: "#F0F8FF",
+        backgroundColor: Theme.Colors.background
       }}
     >
       <View
         style={{
           width: "80%",
-          backgroundColor: "rgba(255, 255, 255, 0.9)",
+          backgroundColor: Theme.Colors.surface,
           borderRadius: 20,
           padding: 20,
           shadowColor: "#000",
@@ -102,7 +104,7 @@ export default function AuthScreen() {
             fontWeight: "600",
             textAlign: "center",
             marginBottom: 20,
-            color: "#616161",
+            color: Theme.Colors.textPrimary,
           }}
         >
           {isRegister ? "註冊新帳號 ✌️" : "歡迎回來 😄"}
@@ -115,7 +117,7 @@ export default function AuthScreen() {
             autoComplete="off"
             autoCorrect={false}
             placeholder="名稱"
-            placeholderTextColor="#888"
+            placeholderTextColor={Theme.Colors.placeholder}
             value={name}
             onChangeText={setName}
           />
@@ -127,7 +129,7 @@ export default function AuthScreen() {
           autoComplete="off"
           autoCorrect={false}
           placeholder="電子郵件"
-          placeholderTextColor="#888"
+          placeholderTextColor={Theme.Colors.placeholder}
           value={email}
           onChangeText={setEmail}
           keyboardType="email-address"
@@ -140,7 +142,7 @@ export default function AuthScreen() {
             autoComplete="off"
             autoCorrect={false}
             placeholder="密碼"
-            placeholderTextColor="#888"
+            placeholderTextColor={Theme.Colors.placeholder}
             value={password}
             onChangeText={setPassword}
             secureTextEntry={!showPassword}
@@ -152,7 +154,7 @@ export default function AuthScreen() {
             <Feather
               name={showPassword ? "eye-off" : "eye"}
               size={20}
-              color="#888"
+              color={Theme.Colors.placeholder}
             />
           </TouchableOpacity>
 
@@ -178,7 +180,7 @@ export default function AuthScreen() {
               autoComplete="off"
               autoCorrect={false}
               placeholder="確認密碼"
-              placeholderTextColor="#888"
+              placeholderTextColor={Theme.Colors.placeholder}
               value={confirmPassword}
               onChangeText={setConfirmPassword}
               secureTextEntry={!showConfirmPassword}
@@ -190,7 +192,7 @@ export default function AuthScreen() {
               <Feather
                 name={showConfirmPassword ? "eye-off" : "eye"}
                 size={20}
-                color="#888"
+                color= {Theme.Colors.placeholder}
               />
             </TouchableOpacity>
           </View>
@@ -198,7 +200,7 @@ export default function AuthScreen() {
 
         <TouchableOpacity
           style={{
-            backgroundColor: "#4CAF50",
+            backgroundColor:Theme.Colors.primary,
             height: 50,
             borderRadius: 15,
             justifyContent: "center",
@@ -211,7 +213,7 @@ export default function AuthScreen() {
             style={{
               fontSize: 18,
               fontWeight: "600",
-              color: "#fff",
+              color: Theme.Colors.surface,
             }}
           >
             {isRegister ? "註冊" : "登入"}
@@ -225,7 +227,7 @@ export default function AuthScreen() {
           <Text
             style={{
               fontSize: 16,
-              color: "#A8E6CF",
+              color: Theme.Colors.link,
               textDecorationLine: "underline",
             }}
           >
@@ -239,11 +241,12 @@ export default function AuthScreen() {
 
 const inputStyle = {
   height: 50,
-  borderColor: "#CCE8CF",
+  borderColor: Theme.Colors.border,
   borderWidth: 1,
   borderRadius: 15,
   marginBottom: 15,
   paddingHorizontal: 15,
-  backgroundColor: "#FFF",
+  backgroundColor: Theme.Colors.surface,
+  color: Theme.Colors.textPrimary,
   fontSize: 16,
 };

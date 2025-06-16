@@ -10,8 +10,6 @@ export const Colors = {
   border: '#DADADA',         // 淺灰色 (邊框)
   error: '#D32F2F',          // 紅色 (錯誤提示)
   success: '#4CAF50',        // 綠色 (成功提示)
-
-  // 你在 ProfileSetupScreen 中使用的中性色系
   neutralBackground: '#F2F2F2',
   neutralText: '#455A64',
   neutralBorder: '#DADADA',
@@ -56,11 +54,44 @@ export const BorderRadius = {
   circle: 60, // 之前 profileImage
 };
 
+export const ActivityStyle = {
+  cardBackground: '#F9F9F9',
+  cardShadow: {
+    shadowColor: '#000',
+    shadowOpacity: 0.1,
+    shadowRadius: 8,
+    elevation: 2,
+  },
+  button: {
+    background: '#4A90E2',
+    text: '#FFF',
+  },
+};
+
+export const ActivityColors = {
+  food: '#FFB347',                // 橘黃色（食物）
+  meditation: '#B2DFDB',          // 清新綠（冥想）
+  cleanUpRoom: '#AED581',         // 草地綠（整理房間）
+  watchMovie: '#90CAF9',          // 藍色（看電影）
+  musicRecommendation: '#CE93D8'  // 柔紫色（音樂）
+};
+
+export const ActivityIcons = {
+  food: '🍱',
+  meditation: '🧘',
+  cleanUpRoom: '🧹',
+  watchMovie: '🎬',
+  musicRecommendation: '🎧'
+};
+
 const Theme = {
   Colors,
   Fonts,
   Spacing,
   BorderRadius,
+  ActivityColors,  
+  ActivityIcons,
+  ActivityStyle,   
 };
 
 export default Theme;
