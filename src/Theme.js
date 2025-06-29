@@ -17,6 +17,8 @@ export const Colors = {
   neutralTagSelectedBg: '#E0E6ED',
   neutralTagSelectedBorder: '#7895B2',
   neutralButton: '#7895B2',
+  meditationBackground: '#000000', // 冥想背景色
+  onMeditation: '#FFFFFF', // 冥想時的文字顏色
 };
 
 export const Fonts = {
@@ -27,6 +29,7 @@ export const Fonts = {
     lg: 18,
     xl: 22,
     xxl: 28,
+    countdown: 72,
   },
   weights: {
     light: '300',
