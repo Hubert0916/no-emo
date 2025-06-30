@@ -152,12 +152,28 @@ export default function AuthScreen() {
         await authLogin(token);
 
         Alert.alert("登入成功", "歡迎!");
-        const userProfile = await AsyncStorage.getItem("user_profile");
+        // const userProfile = await AsyncStorage.getItem("user_profile");
+        // if (userProfile) {
+        //   navigation.replace("UserProfile");
+        // } else {
+        //   navigation.replace("ProfileSetup");
+        // }
+        
+        try {
+        const rawProfile = await AsyncStorage.getItem("user_profile");
+        const userProfile = rawProfile ? JSON.parse(rawProfile) : null;
+
         if (userProfile) {
-          navigation.replace("UserProfile");
+          navigation.replace("ProfileSetup");
         } else {
           navigation.replace("ProfileSetup");
         }
+      } catch (error) {
+        console.error("❌ 讀取 user_profile 發生錯誤:", error);
+        Alert.alert("錯誤", "無法讀取本地用戶資料，已導向設定畫面");
+        navigation.replace("ProfileSetup");
+      }
+
       } else if (res.status === 401) {
         Alert.alert("登入失敗", "帳號或密碼錯誤");
       } else {

@@ -2,7 +2,7 @@
   "expo": {
     "name": "no-emo",
     "slug": "no-emo",
-    "version": "1.0.0",
+    "version": "1.0.3",
     "orientation": "portrait",
     "icon": "./src/assets/icon.png",
     "userInterfaceStyle": "light",
@@ -14,7 +14,10 @@
     },
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.anonymous.no-emo"
+      "bundleIdentifier": "com.anonymous.no-emo",
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false
+      }
     },
     "android": {
       "adaptiveIcon": {
@@ -23,7 +26,11 @@
       },
       "package": "com.allen2004.noemo",
       "allowCleartextTraffic": true,
-      "networkSecurityConfig": "./network_security_config.xml"
+      "networkSecurityConfig": "./network_security_config.xml",
+      "permissions": [
+        "android.permission.RECORD_AUDIO",
+        "android.permission.MODIFY_AUDIO_SETTINGS"
+      ]
     },
     "web": {
       "favicon": "./src/assets/favicon.png"
