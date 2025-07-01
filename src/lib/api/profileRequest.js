@@ -63,3 +63,23 @@ export async function setUserIsFilled() {
     return null;
   }
 }
+
+// check is fill
+export async function isUserProfileFilled() {
+  const token = await getToken();
+  if (!token) return;
+  const res = await fetch(`${apiUrl}/users/check_is_filled`, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  if (res.ok) {
+    const data = await res.json();
+    return data;
+  } else {
+    console.error(await res.text());
+    return null;
+  }
+}

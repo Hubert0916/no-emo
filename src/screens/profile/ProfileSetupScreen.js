@@ -57,8 +57,11 @@ export default function ProfileSetupScreen() {
       const result = await updateUserProfile(userProfile);
       if (!result || result.error) throw new Error("後端儲存失敗");
 
-      // await AsyncStorage.setItem("userProfile", JSON.stringify(userProfile));
-      // await AsyncStorage.setItem("user_profile_filled", "true");
+      // ✅ 通知後端設定 is_filled = true
+      const filledResult = await setUserIsFilled();
+      if (!filledResult || filledResult.error) {
+        throw new Error("設定 is_filled 失敗");
+      }
 
       navigation.replace("UserProfile");
     } catch (err) {

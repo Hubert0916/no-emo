@@ -149,30 +149,24 @@ export default function AuthScreen() {
 
       if (res.status === 200) {
         const { token } = await res.json();
-        await authLogin(token);
+        await authLogin(token); // 儲存 token
 
         Alert.alert("登入成功", "歡迎!");
-        // const userProfile = await AsyncStorage.getItem("user_profile");
-        // if (userProfile) {
-        //   navigation.replace("UserProfile");
-        // } else {
-        //   navigation.replace("ProfileSetup");
-        // }
-        
-        try {
-        const rawProfile = await AsyncStorage.getItem("user_profile");
-        const userProfile = rawProfile ? JSON.parse(rawProfile) : null;
 
-        if (userProfile) {
-          navigation.replace("ProfileSetup");
-        } else {
+        // ✅ 改用後端 check_is_filled API 判斷是否已填寫個人資料
+        try {
+          const filledResult = await isUserProfileFilled();
+
+          if (filledResult?.is_filled) {
+            navigation.replace("UserProfile");
+          } else {
+            navigation.replace("ProfileSetup");
+          }
+        } catch (error) {
+          console.error("❌ 檢查 is_filled 發生錯誤:", error);
+          Alert.alert("錯誤", "無法確認使用者狀態，導向設定頁");
           navigation.replace("ProfileSetup");
         }
-      } catch (error) {
-        console.error("❌ 讀取 user_profile 發生錯誤:", error);
-        Alert.alert("錯誤", "無法讀取本地用戶資料，已導向設定畫面");
-        navigation.replace("ProfileSetup");
-      }
 
       } else if (res.status === 401) {
         Alert.alert("登入失敗", "帳號或密碼錯誤");
