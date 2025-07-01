@@ -46,7 +46,8 @@ export async function updateUserProfile(userProfile) {
 }
 
 export async function setUserIsFilled() {
-  const token = getToken();
+  const token = await getToken();
+  console.log("實際取得的 token:", token); // <== 看這個是什麼
   if (!token) return;
   const res = await fetch(`${apiUrl}/users/set_is_filled`, {
     method: "POST",

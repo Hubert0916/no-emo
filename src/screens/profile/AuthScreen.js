@@ -6,6 +6,7 @@ import Feather from "@react-native-vector-icons/feather";
 
 import { register, login } from "@/lib/api/authRequest";
 import { useAuth } from "@/contexts/AuthContext";
+import { isUserProfileFilled } from "@/lib/api/profileRequest";
 
 // Style constants
 const styles = StyleSheet.create({

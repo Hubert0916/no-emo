@@ -13,6 +13,7 @@ import { useNavigation } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useAuth } from "@/contexts/AuthContext";
 import { updateUserProfile } from "@/lib/api/profileRequest";
+import { setUserIsFilled } from "@/lib/api/profileRequest";
 
 const ACTIVITY_TAG_MAP = {
   '感官享受': 'food',
