@@ -6,20 +6,21 @@ import Feather from "@react-native-vector-icons/feather";
 
 import { register, login } from "@/lib/api/authRequest";
 import { useAuth } from "@/contexts/AuthContext";
+import { isUserProfileFilled } from "@/lib/api/profileRequest";
+import Theme from "@/lib/theme";
 
-// Style constants
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#F0F8FF",
+    backgroundColor: Theme.Colors.background,
   },
   card: {
     width: "80%",
-    backgroundColor: "rgba(255, 255, 255, 0.9)",
-    borderRadius: 20,
-    padding: 20,
+    backgroundColor: Theme.Colors.surface,
+    borderRadius: Theme.BorderRadius.xl,
+    padding: Theme.Spacing.xl,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 5 },
     shadowOpacity: 0.1,
@@ -27,32 +28,34 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   title: {
-    fontSize: 28,
-    fontWeight: "600",
+    fontSize: Theme.Fonts.sizes.xxl,
+    fontWeight: Theme.Fonts.weights.semibold,
     textAlign: "center",
-    marginBottom: 20,
-    color: "#616161",
+    marginBottom: Theme.Spacing.lg,
+    color: Theme.Colors.textSecondary,
   },
   input: {
     height: 50,
-    borderColor: "#CCE8CF",
+    borderColor: Theme.Colors.border,
     borderWidth: 1,
-    borderRadius: 15,
-    marginBottom: 15,
-    paddingHorizontal: 15,
-    backgroundColor: "#FFF",
-    fontSize: 16,
+    borderRadius: Theme.BorderRadius.lg,
+    marginBottom: Theme.Spacing.md,
+    paddingHorizontal: Theme.Spacing.md,
+    backgroundColor: Theme.Colors.surface,
+    fontSize: Theme.Fonts.sizes.md,
+    color: Theme.Colors.textPrimary,
   },
   inputWithIcon: {
     height: 50,
-    borderColor: "#CCE8CF",
+    borderColor: Theme.Colors.border,
     borderWidth: 1,
-    borderRadius: 15,
+    borderRadius: Theme.BorderRadius.lg,
     marginBottom: 4,
-    paddingHorizontal: 15,
+    paddingHorizontal: Theme.Spacing.md,
     paddingRight: 45,
-    backgroundColor: "#FFF",
-    fontSize: 16,
+    backgroundColor: Theme.Colors.surface,
+    fontSize: Theme.Fonts.sizes.md,
+    color: Theme.Colors.textPrimary,
   },
   passwordContainer: {
     position: "relative",
@@ -63,31 +66,31 @@ const styles = StyleSheet.create({
     top: 12,
   },
   passwordHint: {
-    fontSize: 12,
-    color: "#888",
+    fontSize: Theme.Fonts.sizes.xs,
+    color: Theme.Colors.placeholder,
     marginBottom: 8,
     paddingLeft: 10,
   },
   submitButton: {
-    backgroundColor: "#4CAF50",
+    backgroundColor: Theme.Colors.primary,
     height: 50,
-    borderRadius: 15,
+    borderRadius: Theme.BorderRadius.lg,
     justifyContent: "center",
     alignItems: "center",
-    marginTop: 10,
+    marginTop: Theme.Spacing.md,
   },
   submitButtonText: {
-    fontSize: 18,
-    fontWeight: "600",
-    color: "#fff",
+    fontSize: Theme.Fonts.sizes.lg,
+    fontWeight: Theme.Fonts.weights.semibold,
+    color: Theme.Colors.surface,
   },
   switchButton: {
-    marginTop: 12,
+    marginTop: Theme.Spacing.md,
     alignItems: "center",
   },
   switchButtonText: {
-    fontSize: 16,
-    color: "#A8E6CF",
+    fontSize: Theme.Fonts.sizes.md,
+    color: Theme.Colors.primary,
     textDecorationLine: "underline",
   },
 });
@@ -149,15 +152,25 @@ export default function AuthScreen() {
 
       if (res.status === 200) {
         const { token } = await res.json();
-        await authLogin(token);
+        await authLogin(token); // 儲存 token
 
         Alert.alert("登入成功", "歡迎!");
-        const userProfile = await AsyncStorage.getItem("user_profile");
-        if (userProfile) {
-          navigation.replace("UserProfile");
-        } else {
+
+        // ✅ 改用後端 check_is_filled API 判斷是否已填寫個人資料
+        try {
+          const filledResult = await isUserProfileFilled();
+
+          if (filledResult?.is_filled) {
+            navigation.replace("UserProfile");
+          } else {
+            navigation.replace("ProfileSetup");
+          }
+        } catch (error) {
+          console.error("❌ 檢查 is_filled 發生錯誤:", error);
+          Alert.alert("錯誤", "無法確認使用者狀態，導向設定頁");
           navigation.replace("ProfileSetup");
         }
+
       } else if (res.status === 401) {
         Alert.alert("登入失敗", "帳號或密碼錯誤");
       } else {

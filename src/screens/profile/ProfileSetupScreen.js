@@ -1,31 +1,21 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import {
   View,
   TextInput,
-  Button,
   SafeAreaView,
-  Image,
   Text,
   StyleSheet,
   TouchableOpacity,
   Alert,
   ScrollView,
 } from "react-native";
-import * as ImagePicker from "expo-image-picker";
 import { useNavigation } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useAuth } from "@/contexts/AuthContext";
 import { updateUserProfile } from "@/lib/api/profileRequest";
+import { setUserIsFilled } from "@/lib/api/profileRequest";
+import Theme from "@/lib/theme";
 
-// Activity type mapping
-const ACTIVITY_TYPES = {
-  food: 'Enjoy Food',
-  meditation: 'Meditation', 
-  cleanUpRoom: 'Clean Room',
-  watchMovie: 'Watch Movie',
-  musicRecommendation: 'Listen to Music',
-  goForAWalk: 'Take a Walk'
-};
 
 const ACTIVITY_TAG_MAP = {
   '感官享受': 'food',
@@ -39,51 +29,18 @@ const ACTIVITY_TAG_MAP = {
 export default function ProfileSetupScreen() {
   const navigation = useNavigation();
   const { logout } = useAuth();
-  
+
   const [name, setName] = useState("");
   const [bio, setBio] = useState("");
-  const [photo, setPhoto] = useState(null);
   const [selectedTags, setSelectedTags] = useState([]);
 
   const activityTags = Object.entries(ACTIVITY_TAG_MAP);
-
-  useEffect(() => {
-    requestImagePermission();
-  }, []);
-
-  const requestImagePermission = async () => {
-    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
-    if (status !== "granted") {
-      Alert.alert("權限錯誤", "請開啟相簿權限來上傳照片");
-    }
-  };
-
-  const pickImage = async () => {
-    const result = await ImagePicker.launchImageLibraryAsync({
-      allowsEditing: true,
-      aspect: [1, 1],
-      quality: 0.7,
-    });
-    if (!result.canceled) {
-      setPhoto(result.assets[0].uri);
-    }
-  };
 
   const toggleTag = (tagValue) => {
     if (selectedTags.includes(tagValue)) {
       setSelectedTags(selectedTags.filter((t) => t !== tagValue));
     } else {
       setSelectedTags([...selectedTags, tagValue]);
-    }
-  };
-
-  const setUserIsFilled = async () => {
-    try {
-      await AsyncStorage.setItem('user_profile_filled', 'true');
-      return true;
-    } catch (error) {
-      console.error('設定填寫狀態失敗:', error);
-      return false;
     }
   };
 
@@ -96,18 +53,24 @@ export default function ProfileSetupScreen() {
     const userProfile = {
       name: name.trim(),
       bio: bio.trim(),
-      profile: photo,
-      preferredActivities: selectedTags,
+      activity: selectedTags,
     };
 
-    const filled = await setUserIsFilled();
-    if (!filled) {
-      Alert.alert('錯誤', '設定填寫狀態失敗');
-      return;
-    }
+    try {
+      const result = await updateUserProfile(userProfile);
+      if (!result || result.error) throw new Error("後端儲存失敗");
 
-    await AsyncStorage.setItem("user_profile", JSON.stringify(userProfile));
-    navigation.replace("UserProfile");
+      // ✅ 通知後端設定 is_filled = true
+      const filledResult = await setUserIsFilled();
+      if (!filledResult || filledResult.error) {
+        throw new Error("設定 is_filled 失敗");
+      }
+
+      navigation.replace("UserProfile");
+    } catch (err) {
+      console.error("❌ 更新使用者失敗", err);
+      Alert.alert("錯誤", "無法儲存使用者資料，請稍後再試");
+    }
   };
 
   const handleLogout = async () => {
@@ -119,16 +82,6 @@ export default function ProfileSetupScreen() {
     <SafeAreaView style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollContainer}>
         <Text style={styles.title}>完善你的個人資料</Text>
-
-        <TouchableOpacity onPress={pickImage} style={styles.imagePickerContainer}>
-          {photo ? (
-            <Image source={{ uri: photo }} style={styles.profileImage} />
-          ) : (
-            <View style={styles.placeholderImage}>
-              <Text style={styles.placeholderText}>點擊上傳大頭貼</Text>
-            </View>
-          )}
-        </TouchableOpacity>
 
         <TextInput
           style={styles.input}
@@ -152,17 +105,17 @@ export default function ProfileSetupScreen() {
           <Text style={styles.questionSubtitle}>
             可以幫助小天使幫你找適合的活動喔！（可複選）
           </Text>
-          
-          {activityTags.map(([tagName, tagValue]) => (
+
+          {activityTags.map(([label, value]) => (
             <TouchableOpacity
-              key={tagValue}
-              onPress={() => toggleTag(tagValue)}
+              key={value}
+              onPress={() => toggleTag(value)}
               style={[
                 styles.tagOption,
-                selectedTags.includes(tagValue) && styles.tagSelected,
+                selectedTags.includes(value) && styles.tagSelected,
               ]}
             >
-              <Text style={styles.tagText}>{tagName}</Text>
+              <Text style={styles.tagText}>{label}</Text>
             </TouchableOpacity>
           ))}
         </View>
@@ -182,7 +135,7 @@ export default function ProfileSetupScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F2F2F2',
+    backgroundColor: Theme.Colors.background,
   },
   scrollContainer: {
     padding: 30,
@@ -193,17 +146,14 @@ const styles = StyleSheet.create({
     fontSize: 22,
     fontWeight: "600",
     marginBottom: 20,
-    color: '#455A64',
-  },
-  imagePickerContainer: {
-    marginBottom: 20,
+    color: Theme.Colors.textPrimary,
   },
   input: {
     width: "100%",
-    backgroundColor: "#fff",
+    backgroundColor: Theme.Colors.surface,
     borderRadius: 12,
     borderWidth: 1,
-    borderColor: '#DADADA',
+    borderColor: Theme.Colors.border,
     padding: 15,
     marginBottom: 20,
     fontSize: 16,
@@ -211,23 +161,6 @@ const styles = StyleSheet.create({
   bioInput: {
     height: 100,
     textAlignVertical: 'top',
-  },
-  profileImage: {
-    width: 120,
-    height: 120,
-    borderRadius: 60,
-  },
-  placeholderImage: {
-    width: 120,
-    height: 120,
-    borderRadius: 60,
-    backgroundColor: '#EBEBEB',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  placeholderText: {
-    color: "#999",
-    textAlign: 'center',
   },
   tagSection: {
     width: '100%',
@@ -237,44 +170,44 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: '500',
     marginBottom: 10,
-    color: '#455A64',
+    color: Theme.Colors.textPrimary,
   },
   questionSubtitle: {
-    color: '#666',
+    color: Theme.Colors.textSecondary,
     marginBottom: 10,
   },
   tagOption: {
     padding: 12,
     borderWidth: 1,
-    borderColor: '#DADADA',
+    borderColor: Theme.Colors.border,
     borderRadius: 8,
     marginBottom: 10,
-    backgroundColor: '#FFF',
+    backgroundColor: Theme.Colors.surface,
   },
   tagText: {
     fontSize: 16,
-    color: '#455A64',
+    color: Theme.Colors.textPrimary,
   },
   tagSelected: {
-    backgroundColor: '#E0E6ED',
-    borderColor: '#7895B2',
+    backgroundColor: Theme.Colors.primarySurface,
+    borderColor: Theme.Colors.primary,
   },
   button: {
-    backgroundColor: '#7895B2',
+    backgroundColor: Theme.Colors.primary,
     paddingVertical: 15,
     paddingHorizontal: 50,
     borderRadius: 10,
     marginTop: 10,
   },
   logoutButton: {
-    backgroundColor: '#EF5350',
+    backgroundColor: Theme.Colors.danger,
     paddingVertical: 15,
     paddingHorizontal: 50,
     borderRadius: 10,
     marginTop: 10,
   },
   buttonText: {
-    color: "#fff",
+    color: Theme.Colors.onPrimary,
     fontSize: 16,
     fontWeight: "600",
   },

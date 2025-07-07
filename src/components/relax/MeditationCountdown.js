@@ -8,11 +8,14 @@ export default function MeditationCountdown({ route, navigation }) {
   const { duration } = route.params;
   const [secondsLeft, setSecondsLeft] = useState(duration * 60);
   const bgmSoundRef = useRef(null); // Use useRef to store music instance
+  const chimeSoundRef = useRef(null); // 新增 chime 儲存
+
 
   useEffect(() => {
     // Initialize: play bell sound + music
     const initSound = async () => {
       const { sound: chime } = await Audio.Sound.createAsync(bellSound);
+      chimeSoundRef.current = chime;
       await chime.playAsync();
 
       const { sound: bgm } = await Audio.Sound.createAsync(backgroundMusic, {
@@ -38,6 +41,11 @@ export default function MeditationCountdown({ route, navigation }) {
     // Clear background sound effects
     return () => {
       clearInterval(timer);
+      if (chimeSoundRef.current) {
+        chimeSoundRef.current.stopAsync();
+        chimeSoundRef.current.unloadAsync();
+      }
+
       if (bgmSoundRef.current) {
         bgmSoundRef.current.stopAsync();
         bgmSoundRef.current.unloadAsync();

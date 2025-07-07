@@ -1,5 +1,6 @@
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import Theme from '@/lib/theme';
 
 
 export default function MenuPage() {
@@ -27,15 +28,32 @@ export default function MenuPage() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, justifyContent: 'center', alignItems: 'center', padding: 24 },
-  title: { fontSize: 24, fontWeight: 'bold', marginBottom: 32 },
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: Theme.Spacing.xl,
+    backgroundColor: Theme.Colors.background,
+  },
+  title: {
+    fontSize: Theme.Fonts.sizes.xl,
+    fontWeight: Theme.Fonts.weights.bold,
+    color: Theme.Colors.textPrimary,
+    marginBottom: Theme.Spacing.xxl,
+  },
   option: {
-    backgroundColor: '#eee',
-    padding: 20,
-    borderRadius: 16,
-    marginVertical: 10,
+    backgroundColor: Theme.Colors.surface,
+    padding: Theme.Spacing.xl,
+    borderRadius: Theme.BorderRadius.xl,
+    marginVertical: Theme.Spacing.sm,
     width: '100%',
     alignItems: 'center',
+    borderWidth: 1,
+    borderColor: Theme.Colors.border,
   },
-  optionText: { fontSize: 20 },
+  optionText: {
+    fontSize: Theme.Fonts.sizes.lg,
+    fontWeight: Theme.Fonts.weights.medium,
+    color: Theme.Colors.textPrimary,
+  },
 });

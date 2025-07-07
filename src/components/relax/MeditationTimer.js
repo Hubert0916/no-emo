@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import Slider from '@react-native-community/slider';
 import { useNavigation } from '@react-navigation/native';
+import Theme from '@/lib/theme';
 
 import {
     View, Text, StyleSheet, TouchableOpacity, ScrollView, Image
@@ -52,8 +53,11 @@ export default function MeditationTimer() {
           step={1}
           value={duration}
           onValueChange={setDuration}
+          minimumTrackTintColor={Theme.Colors.primary}
+          maximumTrackTintColor={Theme.Colors.border}
+          thumbTintColor={Theme.Colors.surface}
         />
-        <Text style={styles.durationText}>{duration} minutes</Text>
+        <Text style={Theme.Colors.primary}>{duration} minutes</Text>
       </View>
 
       <Text style={styles.label}>Background Music</Text>
@@ -78,35 +82,52 @@ export default function MeditationTimer() {
 }
 
 const styles = StyleSheet.create({
-  container: { padding: 20, flex: 1, backgroundColor: '#fff' },
-  label: { fontSize: 18, fontWeight: 'bold', marginTop: 20 },
-  sliderRow: { flexDirection: 'row', alignItems: 'center' },
-  durationText: { marginLeft: 10, fontSize: 16, color: 'tomato' },
+  container: {
+    padding: Theme.Spacing.xl,
+    flex: 1,
+    backgroundColor: Theme.Colors.background,
+  },
+  label: {
+    fontSize: Theme.Fonts.sizes.lg,
+    fontWeight: Theme.Fonts.weights.bold,
+    color: Theme.Colors.textPrimary,
+    marginTop: Theme.Spacing.lg,
+  },
+  sliderRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: Theme.Spacing.md,
+  },
+  durationText: {
+    marginLeft: Theme.Spacing.sm,
+    fontSize: Theme.Fonts.sizes.md,
+    color: Theme.Colors.accent, // 可以換成 textSecondary 依你喜好
+  },
 
   soundItem: {
     alignItems: 'center',
-    marginRight: 16,
+    marginRight: Theme.Spacing.lg,
   },
   soundImage: {
     width: 64,
     height: 64,
-    borderRadius: 32,
-    marginBottom: 6,
+    borderRadius: Theme.BorderRadius.circle,
+    marginBottom: Theme.Spacing.xs,
   },
 
   startButton: {
-    marginTop: 40,
-    backgroundColor: '#2a82ff',
-    paddingVertical: 16,
-    borderRadius: 12,
+    marginTop: Theme.Spacing.xxl,
+    backgroundColor: Theme.Colors.primary,
+    paddingVertical: Theme.Spacing.lg,
+    borderRadius: Theme.BorderRadius.lg,
     alignItems: 'center',
   },
   stopButton: {
-    backgroundColor: '#d33',
+    backgroundColor: Theme.Colors.error,
   },
   startButtonText: {
-    color: 'white',
-    fontSize: 18,
-    fontWeight: 'bold',
+    color: Theme.Colors.surface,
+    fontSize: Theme.Fonts.sizes.lg,
+    fontWeight: Theme.Fonts.weights.bold,
   },
 });
