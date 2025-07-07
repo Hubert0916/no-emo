@@ -14,6 +14,8 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useAuth } from "@/contexts/AuthContext";
 import { updateUserProfile } from "@/lib/api/profileRequest";
 import { setUserIsFilled } from "@/lib/api/profileRequest";
+import Theme from "@/lib/theme";
+
 
 const ACTIVITY_TAG_MAP = {
   '感官享受': 'food',
@@ -133,7 +135,7 @@ export default function ProfileSetupScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F2F2F2',
+    backgroundColor: Theme.Colors.background,
   },
   scrollContainer: {
     padding: 30,
@@ -144,14 +146,14 @@ const styles = StyleSheet.create({
     fontSize: 22,
     fontWeight: "600",
     marginBottom: 20,
-    color: '#455A64',
+    color: Theme.Colors.textPrimary,
   },
   input: {
     width: "100%",
-    backgroundColor: "#fff",
+    backgroundColor: Theme.Colors.surface,
     borderRadius: 12,
     borderWidth: 1,
-    borderColor: '#DADADA',
+    borderColor: Theme.Colors.border,
     padding: 15,
     marginBottom: 20,
     fontSize: 16,
@@ -168,44 +170,44 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: '500',
     marginBottom: 10,
-    color: '#455A64',
+    color: Theme.Colors.textPrimary,
   },
   questionSubtitle: {
-    color: '#666',
+    color: Theme.Colors.textSecondary,
     marginBottom: 10,
   },
   tagOption: {
     padding: 12,
     borderWidth: 1,
-    borderColor: '#DADADA',
+    borderColor: Theme.Colors.border,
     borderRadius: 8,
     marginBottom: 10,
-    backgroundColor: '#FFF',
+    backgroundColor: Theme.Colors.surface,
   },
   tagText: {
     fontSize: 16,
-    color: '#455A64',
+    color: Theme.Colors.textPrimary,
   },
   tagSelected: {
-    backgroundColor: '#E0E6ED',
-    borderColor: '#7895B2',
+    backgroundColor: Theme.Colors.primarySurface,
+    borderColor: Theme.Colors.primary,
   },
   button: {
-    backgroundColor: '#7895B2',
+    backgroundColor: Theme.Colors.primary,
     paddingVertical: 15,
     paddingHorizontal: 50,
     borderRadius: 10,
     marginTop: 10,
   },
   logoutButton: {
-    backgroundColor: '#EF5350',
+    backgroundColor: Theme.Colors.danger,
     paddingVertical: 15,
     paddingHorizontal: 50,
     borderRadius: 10,
     marginTop: 10,
   },
   buttonText: {
-    color: "#fff",
+    color: Theme.Colors.onPrimary,
     fontSize: 16,
     fontWeight: "600",
   },

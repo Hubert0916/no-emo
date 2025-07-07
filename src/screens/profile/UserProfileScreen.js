@@ -3,6 +3,8 @@ import { View, Text, StyleSheet, TouchableOpacity, ScrollView } from 'react-nati
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useNavigation } from '@react-navigation/native';
 import { getUserProfile } from '@/lib/api/profileRequest';
+import Theme from '@/lib/theme';
+
 
 const DEFAULT_NAME = '個人資料';
 const DEFAULT_BIO = '這個人還沒有留下自我介紹。';
@@ -90,16 +92,17 @@ const styles = StyleSheet.create({
   },
   container: {
     alignItems: 'center',
+    backgroundColor: Theme.Colors.background,
   },
   name: {
     fontSize: 26,
     fontWeight: "bold",
-    color: "#333",
+    color: Theme.Colors.textPrimary,
     marginBottom: 12,
   },
   card: {
     width: "100%",
-    backgroundColor: "#fff",
+    backgroundColor: Theme.Colors.surface,
     borderRadius: 12,
     padding: 16,
     marginBottom: 16,
@@ -113,34 +116,34 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "600",
     marginBottom: 6,
-    color: "#444",
+    color: Theme.Colors.textPrimary,
   },
   sectionContent: {
     fontSize: 16,
-    color: "#555",
+    color: Theme.Colors.textSecondary,
   },
   activityWrap: {
     marginTop: 6,
   },
   activityItem: {
     fontSize: 15,
-    color: "#555",
+    color: Theme.Colors.textSecondary,
     marginBottom: 4,
   },
   logoutButton: {
     marginTop: 20,
-    backgroundColor: '#EF5350',
+    backgroundColor: Theme.Colors.danger,
     paddingVertical: 12,
     paddingHorizontal: 40,
     borderRadius: 10,
   },
   logoutText: {
-    color: '#fff',
+    color: Theme.Colors.onDanger,
     fontSize: 16,
     fontWeight: '600',
   },
   loadingText: {
     fontSize: 18,
-    color: '#666',
+    color: Theme.Colors.textSecondary,
   },
 });
