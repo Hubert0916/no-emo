@@ -74,7 +74,7 @@ export default function MeditationTimer() {
         onPress={isPlaying ? stopMeditation : startMeditation}
       >
         <Text style={styles.startButtonText}>
-          {isPlaying ? 'End Meditation' : '開始冥想'}
+          {isPlaying ? '結束冥想' : '開始冥想'}
         </Text>
       </TouchableOpacity>
     </View>
